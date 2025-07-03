@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ImagesCarousel from "@/components/ImagesCarousel";
 import Products from "@/components/Products";
@@ -20,6 +21,8 @@ export default function Home() {
         <ImagesCarousel />
         <Products />
       </main>
+
+      <Footer />
 
       {/* <main className="mb-20">
         <Hero />

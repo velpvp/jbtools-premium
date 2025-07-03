@@ -1,0 +1,294 @@
+ body {
+     background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+     min-height: 100vh;
+     color: white;
+     font-family: 'Inter', 'Segoe UI', sans-serif;
+ }
+
+ .product-container {
+     max-width: 1400px;
+     margin: 0 auto;
+     padding: 2rem;
+ }
+
+ .back-button {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.5rem;
+     background: rgba(59, 130, 246, 0.1);
+     color: #3b82f6;
+     border: 1px solid rgba(59, 130, 246, 0.3);
+     padding: 0.75rem 1.5rem;
+     border-radius: 50px;
+     text-decoration: none;
+     font-weight: 600;
+     transition: all 0.3s ease;
+     margin-bottom: 2rem;
+     backdrop-filter: blur(10px);
+ }
+
+ .back-button:hover {
+     background: rgba(59, 130, 246, 0.2);
+     transform: translateX(-5px);
+     color: #60a5fa;
+ }
+
+ .product-header {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 4rem;
+     margin-bottom: 4rem;
+ }
+
+ .product-image-container {
+     position: relative;
+     background: rgba(255, 255, 255, 0.05);
+     border-radius: 20px;
+     padding: 2rem;
+     backdrop-filter: blur(10px);
+     border: 1px solid rgba(255, 255, 255, 0.1);
+ }
+
+ .product-image {
+     width: 100%;
+     height: 400px;
+     border-radius: 15px;
+     object-fit: cover;
+     background: rgba(255, 255, 255, 0.1);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 4rem;
+     color: rgba(255, 255, 255, 0.3);
+ }
+
+ .product-info {
+     display: flex;
+     flex-direction: column;
+     gap: 2rem;
+ }
+
+ .product-title {
+     font-size: 3rem;
+     font-weight: 800;
+     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+     background-clip: text;
+     margin: 0;
+ }
+
+ .product-description {
+     font-size: 1.2rem;
+     line-height: 1.6;
+     color: rgba(255, 255, 255, 0.8);
+     margin: 0;
+ }
+
+ .product-category {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.5rem;
+     background: rgba(139, 92, 246, 0.2);
+     color: #a78bfa;
+     padding: 0.5rem 1rem;
+     border-radius: 50px;
+     font-weight: 600;
+     width: fit-content;
+ }
+
+ .price-section {
+     background: rgba(255, 255, 255, 0.05);
+     padding: 2rem;
+     border-radius: 15px;
+     border: 1px solid rgba(255, 255, 255, 0.1);
+ }
+
+ .price-label {
+     font-size: 1rem;
+     color: rgba(255, 255, 255, 0.6);
+     margin-bottom: 0.5rem;
+ }
+
+ .price-value {
+     font-size: 2.5rem;
+     font-weight: 800;
+     color: #10b981;
+     margin-bottom: 1rem;
+ }
+
+ .quantity-section {
+     margin-bottom: 2rem;
+ }
+
+ .quantity-label {
+     font-size: 1.1rem;
+     font-weight: 600;
+     margin-bottom: 1rem;
+     display: block;
+ }
+
+ .quantity-controls {
+     display: flex;
+     align-items: center;
+     gap: 1rem;
+     margin-bottom: 1rem;
+ }
+
+ .quantity-btn {
+     background: rgba(59, 130, 246, 0.2);
+     border: 1px solid rgba(59, 130, 246, 0.3);
+     color: #3b82f6;
+     width: 40px;
+     height: 40px;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     transition: all 0.3s ease;
+ }
+
+ .quantity-btn:hover {
+     background: rgba(59, 130, 246, 0.3);
+     transform: scale(1.1);
+ }
+
+ .quantity-input {
+     background: rgba(255, 255, 255, 0.1);
+     border: 1px solid rgba(255, 255, 255, 0.2);
+     color: white;
+     padding: 0.75rem;
+     border-radius: 10px;
+     width: 80px;
+     text-align: center;
+     font-size: 1.1rem;
+     font-weight: 600;
+ }
+
+ .total-price {
+     background: rgba(16, 185, 129, 0.1);
+     border: 1px solid rgba(16, 185, 129, 0.3);
+     padding: 1rem;
+     border-radius: 10px;
+     text-align: center;
+ }
+
+ .total-label {
+     font-size: 1rem;
+     color: rgba(255, 255, 255, 0.7);
+     margin-bottom: 0.5rem;
+ }
+
+ .total-value {
+     font-size: 1.8rem;
+     font-weight: 800;
+     color: #10b981;
+ }
+
+ .action-buttons {
+     display: flex;
+     gap: 1rem;
+     flex-wrap: wrap;
+ }
+
+ .btn-primary {
+     flex: 1;
+     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+     border: none;
+     color: white;
+     padding: 1rem 2rem;
+     border-radius: 15px;
+     font-size: 1.1rem;
+     font-weight: 600;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 0.5rem;
+     min-height: 60px;
+ }
+
+ .btn-primary:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+ }
+
+ .btn-secondary {
+     flex: 1;
+     background: rgba(255, 255, 255, 0.1);
+     border: 1px solid rgba(255, 255, 255, 0.2);
+     color: white;
+     padding: 1rem 2rem;
+     border-radius: 15px;
+     font-size: 1.1rem;
+     font-weight: 600;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 0.5rem;
+     min-height: 60px;
+ }
+
+ .btn-secondary:hover {
+     background: rgba(255, 255, 255, 0.2);
+     transform: translateY(-2px);
+ }
+
+ .loading {
+     display: none;
+     text-align: center;
+     padding: 4rem;
+ }
+
+ .spinner {
+     width: 50px;
+     height: 50px;
+     border: 3px solid rgba(255, 255, 255, 0.3);
+     border-top: 3px solid #3b82f6;
+     border-radius: 50%;
+     animation: spin 1s linear infinite;
+     margin: 0 auto 1rem;
+ }
+
+ @keyframes spin {
+     0% {
+         transform: rotate(0deg);
+     }
+
+     100% {
+         transform: rotate(360deg);
+     }
+ }
+
+ .error-message {
+     background: rgba(239, 68, 68, 0.1);
+     border: 1px solid rgba(239, 68, 68, 0.3);
+     color: #f87171;
+     padding: 1rem;
+     border-radius: 10px;
+     text-align: center;
+     margin-bottom: 2rem;
+ }
+
+ @media (max-width: 768px) {
+     .product-header {
+         grid-template-columns: 1fr;
+         gap: 2rem;
+     }
+
+     .product-title {
+         font-size: 2rem;
+     }
+
+     .action-buttons {
+         flex-direction: column;
+     }
+
+     .product-container {
+         padding: 1rem;
+     }
+ }
