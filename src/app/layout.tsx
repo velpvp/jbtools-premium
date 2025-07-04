@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import ClientWrapper from "@/components/ClientWrapper"; // ✅ IMPORTANTE
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -52,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${montserrat.variable} font-sans antialiased`}>
-        {children}
+        <ClientWrapper>{children}</ClientWrapper>
         <ToastContainer position="bottom-right" autoClose={3000} />
       </body>
     </html>

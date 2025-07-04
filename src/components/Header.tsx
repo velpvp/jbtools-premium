@@ -2,8 +2,10 @@ import Image from "next/image";
 import logoFloating from "../../public/logo-floating.png";
 import Link from "next/link";
 import { FaShoppingCart, FaSearch, FaCog } from "react-icons/fa";
+import { useCart } from "@/context/CartContext";
 
 export default function Header() {
+  const { cart } = useCart();
   return (
     <header className="header">
       <div className="container">
@@ -33,7 +35,7 @@ export default function Header() {
           <div className="header-actions">
             <button className="btn-cart" id="cartBtn">
               <FaShoppingCart />
-              Carrinho (<span id="cartCount">0</span>)
+              Carrinho (<span>{cart.length}</span>)
             </button>
             <Link href={`/admin`} className="btn-manage bg-[#4f9cf9] ml-[10px]">
               <FaCog />

@@ -2,7 +2,7 @@
 
 import "./style.css";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Product } from "@/types/Product";
@@ -16,13 +16,18 @@ import {
   FaShoppingCart,
   FaCreditCard,
 } from "react-icons/fa";
+import { useCart } from "@/context/CartContext";
 
 export default function ProductContent() {
   const params = useParams();
+  const router = useRouter();
   const idParam = params.id;
   const id = Array.isArray(idParam) ? idParam[0] : idParam;
 
+  const { addToCart } = useCart();
+
   const [product, setProduct] = useState<Product | null>(null);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -55,6 +60,32 @@ export default function ProductContent() {
 
   if (!product) return null;
 
+  // Função para atualizar quantidade, limite alto (ex: 999)
+  const handleQuantityChange = (newQuantity: number) => {
+    if (newQuantity < 1) setQuantity(1);
+    else if (newQuantity > 999) setQuantity(999);
+    else setQuantity(newQuantity);
+  };
+
+  const handleMinusClick = () => handleQuantityChange(quantity - 1);
+  const handlePlusClick = () => handleQuantityChange(quantity + 1);
+
+  // Adiciona ao carrinho sem redirecionar
+  const handleAddToCart = () => {
+    for (let i = 0; i < quantity; i++) {
+      addToCart(product, false);
+    }
+    alert(`Adicionado(s) ${quantity}x ${product.name} ao carrinho!`);
+  };
+
+  // Adiciona e redireciona para o carrinho
+  const handleBuyNow = () => {
+    for (let i = 0; i < quantity; i++) {
+      addToCart(product, false);
+    }
+    router.push("/cart");
+  };
+
   return (
     <main className="product-container">
       <Link href="/" className="back-button">
@@ -67,7 +98,7 @@ export default function ProductContent() {
           <div className="product-image-container">
             <Image
               src={product.image}
-              className="product-image"
+              className="product-img"
               alt="Produto"
               width={1920}
               height={1144}
@@ -75,7 +106,7 @@ export default function ProductContent() {
           </div>
 
           <div className="product-info">
-            <h1 id="productTitle" className="product-title">
+            <h1 id="productTitle" className="product-title-name">
               {product.name}
             </h1>
             <p
@@ -98,35 +129,41 @@ export default function ProductContent() {
               <div className="quantity-section">
                 <label className="quantity-label">Quantidade:</label>
                 <div className="quantity-controls">
-                  <button className="quantity-btn">
+                  <button className="quantity-btn" onClick={handleMinusClick}>
                     <FaMinus />
                   </button>
                   <input
                     type="number"
                     id="quantityInput"
                     className="quantity-input"
-                    value="1"
-                    min="1"
-                    max="10"
+                    value={quantity}
+                    min={1}
+                    max={999}
+                    onChange={(e) =>
+                      handleQuantityChange(Number(e.target.value))
+                    }
                   />
-                  <button className="quantity-btn">
+                  <button className="quantity-btn" onClick={handlePlusClick}>
                     <FaPlus />
                   </button>
                 </div>
                 <div className="total-price">
                   <div className="total-label">Total:</div>
                   <div id="totalPrice" className="total-value">
-                    R$ 0,00
+                    R${" "}
+                    {Number(product.price * quantity)
+                      .toFixed(2)
+                      .replace(".", ",")}
                   </div>
                 </div>
               </div>
 
               <div className="action-buttons">
-                <button className="btn-primary">
+                <button className="btn-primary" onClick={handleAddToCart}>
                   <FaShoppingCart />
                   Adicionar ao Carrinho
                 </button>
-                <button className="btn-secondary">
+                <button className="btn-secondary" onClick={handleBuyNow}>
                   <FaCreditCard />
                   Comprar Agora
                 </button>
@@ -136,25 +173,5 @@ export default function ProductContent() {
         </div>
       </div>
     </main>
-
-    // <main classNameName="flex justify-start items-start max-md:flex-col gap-5 px-2 py-5">
-    //   <div classNameName="w-full md:w-[70%] px-4 sm:px-8 py-5 rounded shadow bg-white">
-    //     <Image
-    //       src={product.image}
-    //       alt={`Imagem do produto ${product.name}`}
-    //       width={1280}
-    //       height={720}
-    //       unoptimized
-    //       classNameName="w-full h-[400px] 2xl:h-[550px] object-contain rounded mb-4"
-    //     />
-
-    //     {/* Nome e descrição */}
-    //     <h1 classNameName="text-3xl font-bold mb-4">{product.name}</h1>
-    //     <section>
-    //       <h2 classNameName="text-md font-semibold mb-2">Descrição</h2>
-    //       <p classNameName="whitespace-pre-line">{product.description}</p>
-    //     </section>
-    //   </div>
-    // </main>
   );
 }

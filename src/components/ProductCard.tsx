@@ -3,10 +3,13 @@
 import Image from "next/image";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaPlay } from "react-icons/fa";
-import Link from "next/link";
 import { Product } from "@/types/Product";
+import { useCart } from "@/context/CartContext";
+import Link from "next/link";
 
 export default function ProductCard({ product }: { product: Product }) {
+  const { addToCart } = useCart();
+
   return (
     <div className="product-card p-4 rounded border shadow hover:shadow-lg transition">
       <div className="product-image mb-2">
@@ -38,7 +41,10 @@ export default function ProductCard({ product }: { product: Product }) {
           <FaPlay />
           Adquirir
         </Link>
-        <button className="btn-add-cart flex-1 bg-gray-200 text-black py-1 rounded hover:bg-gray-300 flex items-center justify-center gap-1">
+        <button
+          onClick={() => addToCart(product)}
+          className="btn-add-cart flex-1 bg-gray-200 text-black py-1 rounded hover:bg-gray-300 flex items-center justify-center gap-1"
+        >
           <FaCartShopping />
           Adicionar ao Carrinho
         </button>
