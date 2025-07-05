@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ProductCard from "@/components/ProductCard";
+import { Product } from "@/types/Product";
+
 import {
   FaBoxOpen,
   FaGlobe,
@@ -11,16 +13,8 @@ import {
   FaTv,
   FaGamepad,
   FaEllipsisH,
+  FaTag,
 } from "react-icons/fa";
-
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  price: number;
-  category: string;
-};
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -36,7 +30,8 @@ export default function Products() {
           ...doc.data(),
         })) as Product[];
 
-        setProducts(data);
+        const ativos = data.filter((p) => p.active); // 👈 filtro
+        setProducts(ativos);
       } catch (err) {
         console.error("Erro ao buscar produtos:", err);
       } finally {
@@ -54,66 +49,77 @@ export default function Products() {
   const filteredProducts =
     selectedCategory === "all"
       ? products
-      : products.filter((p) => p.category === selectedCategory);
+      : products.filter(
+          (p) => p.category.toLowerCase() === selectedCategory.toLowerCase()
+        );
 
   return (
-    <section className="main-content flex items-start gap-6 p-6">
-      <div className="sidebar">
-        <div className="sidebar-header">
-          <h3 className="text-lg font-semibold mb-4">Categorias</h3>
+    <section className="main-content gap-6 p-6">
+      <div>
+        <div className="mb-2 descontos">
+          <div className="py-1 px-4 font-bold flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis">
+            <FaTag className="shrink-0" />
+            <span className="truncate">10% OFF NA SUA PRIMEIRA COMPRA</span>
+          </div>
         </div>
-        <ul className="category-list">
-          <li
-            className={`category-item ${
-              selectedCategory === "all" ? "active" : ""
-            }`}
-            data-category="all"
-            onClick={() => handleCategoryClick("all")}
-          >
-            <FaGlobe className="text-2xl icon-category" />
-            <span>Todos</span>
-          </li>
-          <li
-            className={`category-item ${
-              selectedCategory === "ias" ? "active" : ""
-            }`}
-            data-category="ias"
-            onClick={() => handleCategoryClick("ias")}
-          >
-            <FaRobot className="text-2xl icon-category" />
-            <span>I.A.S</span>
-          </li>
-          <li
-            className={`category-item ${
-              selectedCategory === "streamings" ? "active" : ""
-            }`}
-            data-category="streamings"
-            onClick={() => handleCategoryClick("streamings")}
-          >
-            <FaTv className="text-2xl icon-category" />
-            <span>Streamings</span>
-          </li>
-          <li
-            className={`category-item ${
-              selectedCategory === "jogos" ? "active" : ""
-            }`}
-            data-category="jogos"
-            onClick={() => handleCategoryClick("jogos")}
-          >
-            <FaGamepad className="text-2xl icon-category" />
-            <span>Jogos</span>
-          </li>
-          <li
-            className={`category-item ${
-              selectedCategory === "outros" ? "active" : ""
-            }`}
-            data-category="outros"
-            onClick={() => handleCategoryClick("outros")}
-          >
-            <FaEllipsisH className="text-2xl icon-category" />
-            <span>Outros</span>
-          </li>
-        </ul>
+
+        <div className="sidebar h-full">
+          <div className="sidebar-header">
+            <h3 className="text-lg font-semibold mb-4">Categorias</h3>
+          </div>
+          <ul className="category-list">
+            <li
+              className={`category-item ${
+                selectedCategory === "all" ? "active" : ""
+              }`}
+              data-category="all"
+              onClick={() => handleCategoryClick("all")}
+            >
+              <FaGlobe className="text-2xl icon-category" />
+              <span>Todos</span>
+            </li>
+            <li
+              className={`category-item ${
+                selectedCategory === "ias" ? "active" : ""
+              }`}
+              data-category="ias"
+              onClick={() => handleCategoryClick("ias")}
+            >
+              <FaRobot className="text-2xl icon-category" />
+              <span>I.A.S</span>
+            </li>
+            <li
+              className={`category-item ${
+                selectedCategory === "streamings" ? "active" : ""
+              }`}
+              data-category="streamings"
+              onClick={() => handleCategoryClick("streamings")}
+            >
+              <FaTv className="text-2xl icon-category" />
+              <span>Streamings</span>
+            </li>
+            <li
+              className={`category-item ${
+                selectedCategory === "jogos" ? "active" : ""
+              }`}
+              data-category="jogos"
+              onClick={() => handleCategoryClick("jogos")}
+            >
+              <FaGamepad className="text-2xl icon-category" />
+              <span>Jogos</span>
+            </li>
+            <li
+              className={`category-item ${
+                selectedCategory === "outros" ? "active" : ""
+              }`}
+              data-category="outros"
+              onClick={() => handleCategoryClick("outros")}
+            >
+              <FaEllipsisH className="text-2xl icon-category" />
+              <span>Outros</span>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div className="container flex-1">

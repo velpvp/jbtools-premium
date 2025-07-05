@@ -8,6 +8,8 @@ import { db } from "@/lib/firebase";
 import { Product } from "@/types/Product";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-toastify";
+
 import {
   FaArrowLeft,
   FaTag,
@@ -46,6 +48,9 @@ export default function ProductContent() {
             image: data.image,
             price: data.price,
             category: data.category,
+            promo: data.promo ?? null,
+            promoEnabled: data.promoEnabled ?? false,
+            active: data.active ?? true,
           });
         } else {
           setProduct(null);
@@ -75,7 +80,7 @@ export default function ProductContent() {
     for (let i = 0; i < quantity; i++) {
       addToCart(product, false);
     }
-    alert(`Adicionado(s) ${quantity}x ${product.name} ao carrinho!`);
+    toast.success(`Adicionado(s) ${quantity}x ${product.name} ao carrinho!`);
   };
 
   // Adiciona e redireciona para o carrinho
@@ -123,7 +128,20 @@ export default function ProductContent() {
             <div className="price-section">
               <div className="price-label">Preço unitário:</div>
               <div id="unitPrice" className="price-value">
-                R$ {Number(product.price).toFixed(2).replace(".", ",")}
+                {product.promoEnabled && product.promo ? (
+                  <div className="flex items-center gap-2">
+                    <span className="">
+                      R$ {Number(product.promo).toFixed(2).replace(".", ",")}
+                    </span>
+                    <span className="line-through text-gray-400 text-base font-medium">
+                      R$ {Number(product.price).toFixed(2).replace(".", ",")}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="l">
+                    R$ {Number(product.price).toFixed(2).replace(".", ",")}
+                  </span>
+                )}
               </div>
 
               <div className="quantity-section">
@@ -151,23 +169,34 @@ export default function ProductContent() {
                   <div className="total-label">Total:</div>
                   <div id="totalPrice" className="total-value">
                     R${" "}
-                    {Number(product.price * quantity)
+                    {Number(
+                      (product.promoEnabled && product.promo
+                        ? product.promo
+                        : product.price) * quantity
+                    )
                       .toFixed(2)
                       .replace(".", ",")}
                   </div>
                 </div>
               </div>
 
-              <div className="action-buttons">
-                <button className="btn-primary" onClick={handleAddToCart}>
-                  <FaShoppingCart />
-                  Adicionar ao Carrinho
-                </button>
-                <button className="btn-secondary" onClick={handleBuyNow}>
-                  <FaCreditCard />
-                  Comprar Agora
-                </button>
-              </div>
+              {product.active ? (
+                <div className="action-buttons">
+                  <button className="btn-primary" onClick={handleAddToCart}>
+                    <FaShoppingCart />
+                    Adicionar ao Carrinho
+                  </button>
+                  <button className="btn-secondary" onClick={handleBuyNow}>
+                    <FaCreditCard />
+                    Comprar Agora
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-4 text-red-500 font-semibold text-center border border-red-500 p-3 rounded">
+                  Este anúncio está desativado e indisponível para compra no
+                  momento.
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -50,7 +50,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce((sum, item) => {
+    const unitPrice = item.promoEnabled && item.promo ? item.promo : item.price;
+    return sum + unitPrice * item.quantity;
+  }, 0);
 
   return (
     <CartContext.Provider

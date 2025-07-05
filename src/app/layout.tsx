@@ -54,7 +54,7 @@ export default function RootLayout({
     <html lang="pt-br">
       <body className={`${montserrat.variable} font-sans antialiased`}>
         <ClientWrapper>{children}</ClientWrapper>
-        <ToastContainer position="bottom-right" autoClose={3000} />
+        <ToastContainer theme="dark" position="bottom-right" autoClose={3000} />
       </body>
     </html>
   );

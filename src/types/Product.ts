@@ -4,5 +4,8 @@ export type Product = {
   description: string;
   image: string;
   price: number;
-  category: string;
+  category: "Ias" | "Streamings" | "Jogos" | "Outros";
+  promo?: number | null;
+  promoEnabled?: boolean;
+  active: boolean;
 };

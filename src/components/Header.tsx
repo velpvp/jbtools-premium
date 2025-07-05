@@ -33,10 +33,10 @@ export default function Header() {
           </div>
 
           <div className="header-actions">
-            <button className="btn-cart" id="cartBtn">
+            <Link href={`/cart`} className="btn-cart" id="cartBtn">
               <FaShoppingCart />
               Carrinho (<span>{cart.length}</span>)
-            </button>
+            </Link>
             <Link href={`/admin`} className="btn-manage bg-[#4f9cf9] ml-[10px]">
               <FaCog />
               Gerenciar

@@ -50,19 +50,19 @@ export default function LoginContent() {
   return (
     <>
       <Header />
-      <main className="min-h-[90vh] flex items-center justify-center bg-gray-100 p-4">
+      <main className="min-h-[90vh] flex items-center justify-center p-4">
         <form
           onSubmit={fazerLogin}
-          className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm"
+          className="bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-6 rounded-lg shadow-md w-full max-w-sm"
         >
-          <h1 className="text-2xl font-bold mb-4 text-center text-[var(--primary)]">
+          <h1 className="text-2xl font-bold mb-4 text-center text-[#2563eb]">
             Acessar Painel
           </h1>
           {erro && <p className="text-red-500 text-sm mb-2">{erro}</p>}
           <input
             type="email"
             placeholder="Email"
-            className="w-full p-2 bg-gray-200 outline-none mb-2"
+            className="w-full p-2 border-b border-b-[rgba(59,130,246,0.3)] outline-none mb-2"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -70,14 +70,14 @@ export default function LoginContent() {
           <input
             type="password"
             placeholder="Senha"
-            className="w-full p-2 bg-gray-200 outline-none mb-4"
+            className="w-full p-2 border-b border-b-[rgba(59,130,246,0.3)] outline-none mb-2"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition cursor-pointer"
+            className="mt-4 w-full bg-[#2563eb] hover:bg-[#1d4ed8] transition text-white py-2 rounded cursor-pointer"
           >
             Entrar
           </button>

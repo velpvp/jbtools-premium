@@ -16,21 +16,36 @@ export default function ProductCard({ product }: { product: Product }) {
         <Image
           src={product.image}
           alt={product.name}
-          width={400}
-          height={300}
-          className="w-full object-cover rounded aspect-video"
+          width={1920}
+          height={1144}
+          className="w-full object-cover rounded"
         />
       </div>
-      <h3 className="product-title font-bold text-lg">{product.name}</h3>
-      <p className="product-description text-sm text-gray-500 mb-2">
+      <h3 className="product-title font-bold text-lg truncate">
+        {product.name}
+      </h3>
+      <p className="text-[1rem] text-gray-100 mb-2">
         {product.description.length > 120
           ? product.description.slice(0, 120) + "..."
           : product.description}
       </p>
 
       <div className="product-price text-sm">A partir de</div>
-      <div className="product-price-value text-xl font-semibold text-green-600 mb-2">
-        R$ {Number(product.price).toFixed(2).replace(".", ",")}
+      <div className="product-price-value text-xl font-semibold mb-2">
+        {product.promoEnabled && product.promo ? (
+          <div className="flex items-center gap-2">
+            <span className="">
+              R$ {Number(product.promo).toFixed(2).replace(".", ",")}
+            </span>
+            <span className="line-through text-gray-400 text-base font-medium">
+              R$ {Number(product.price).toFixed(2).replace(".", ",")}
+            </span>
+          </div>
+        ) : (
+          <span className="">
+            R$ {Number(product.price).toFixed(2).replace(".", ",")}
+          </span>
+        )}
       </div>
 
       <div className="product-actions flex gap-2">
