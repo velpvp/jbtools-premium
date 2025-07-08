@@ -104,7 +104,7 @@ export default function ProductContent() {
     return product.price;
   };
 
-  const totalPrice = getUnitPrice() * quantity;
+  const totalPrice = (getUnitPrice() ?? 0) * quantity;
   const isBuyDisabled =
     product.variations && product.variations.length > 0 && !selectedVariation;
 
@@ -165,13 +165,14 @@ export default function ProductContent() {
                 ) : (
                   <>
                     <span>
-                      R$ {getUnitPrice().toFixed(2).replace(".", ",")}
+                      R$ {(getUnitPrice() ?? 0).toFixed(2).replace(".", ",")}
                     </span>
+
                     {product.promoEnabled &&
                       product.promo &&
                       !selectedVariation && (
                         <span className="line-through text-gray-400 text-base font-medium ml-2">
-                          R$ {product.price.toFixed(2).replace(".", ",")}
+                          R$ {(product.price ?? 0).toFixed(2).replace(".", ",")}
                         </span>
                       )}
                   </>

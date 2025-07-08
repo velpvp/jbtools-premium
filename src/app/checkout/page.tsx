@@ -1,4 +1,4 @@
-import CheckoutContent from "./Content";
+// import CheckoutContent from "./Content";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,6 +19,14 @@ export const metadata: Metadata = {
   },
 };
 
+// export default function CheckoutPage() {
+//   return <CheckoutContent />;
+// }
+
 export default function CheckoutPage() {
-  return <CheckoutContent />;
+  return (
+    <div className="min-h-screen flex justify-center items-center">
+      Página do Checkout em desenvolvimento
+    </div>
+  );
 }
