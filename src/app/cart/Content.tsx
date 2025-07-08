@@ -117,13 +117,13 @@ export default function CartContent() {
                             <>
                               <span className="line-through text-sm text-gray-400">
                                 R${" "}
-                                {(item.product.price * item.quantity)
+                                {((item.product.price ?? 0) * item.quantity)
                                   .toFixed(2)
                                   .replace(".", ",")}
                               </span>
                               <span>
                                 R${" "}
-                                {(item.product.promo * item.quantity)
+                                {((item.product.promo ?? 0) * item.quantity)
                                   .toFixed(2)
                                   .replace(".", ",")}
                               </span>
@@ -131,7 +131,7 @@ export default function CartContent() {
                           ) : (
                             <span>
                               R${" "}
-                              {(price * item.quantity)
+                              {((price ?? 0) * item.quantity)
                                 .toFixed(2)
                                 .replace(".", ",")}
                             </span>
@@ -158,9 +158,9 @@ export default function CartContent() {
                     .reduce((acc, item) => {
                       const unitPrice =
                         item.variation?.price ??
-                        (item.product.promoEnabled && item.product.promo
+                        (item.product.promoEnabled && item.product.promo != null
                           ? item.product.promo
-                          : item.product.price);
+                          : item.product.price ?? 0);
                       return acc + unitPrice * item.quantity;
                     }, 0)
                     .toFixed(2)
