@@ -9,6 +9,7 @@ export default function CartContent() {
   const { cart, updateQuantity, removeFromCart } = useCart();
 
   const handleDecrease = (item: CartItem) => {
+    if (!item.product) return;
     if (item.quantity > 1) {
       updateQuantity(
         item.product.id,
@@ -19,6 +20,8 @@ export default function CartContent() {
   };
 
   const handleIncrease = (item: CartItem) => {
+    if (!item.product) return;
+
     updateQuantity(
       item.product.id,
       item.variation?.name ?? null,
@@ -27,6 +30,7 @@ export default function CartContent() {
   };
 
   const handleRemove = (item: CartItem) => {
+    if (!item.product) return;
     removeFromCart(item.product.id, item.variation?.name ?? null);
   };
 
