@@ -99,7 +99,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       (item.product.promoEnabled && item.product.promo
         ? item.product.promo
         : item.product.price);
-    return sum + price * item.quantity;
+    return sum + (price ?? 0) * item.quantity;
   }, 0);
 
   return (
