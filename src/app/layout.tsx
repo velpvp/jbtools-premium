@@ -12,32 +12,19 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Carros novos, seminovos e usados - AutoShop",
-  description:
-    "Compre carros novos, seminovos e usados na AutoShop. Encontre os melhores preços e condições do mercado com qualidade e segurança garantida",
-  keywords: [
-    "Comprar carro",
-    "Carros baratos",
-    "Carros usados",
-    "Carros novos",
-    "Carros seminovos",
-  ],
+  title: "Jbtools Premium - Contas Digitais Premium",
   icons: {
     icon: "/favicon.ico",
   },
   openGraph: {
-    title: "Carros novos, seminovos e usados - AutoShop",
-    description:
-      "Compre carros novos, seminovos e usados na AutoShop. Encontre os melhores preços e condições do mercado com qualidade e segurança garantida",
+    title: "Jbtools Premium - Contas Digitais Premium",
     type: "website",
     siteName: "AutoShop",
     locale: "pt_BR",
   },
   twitter: {
     card: "summary",
-    title: "Carros novos, seminovos e usados - AutoShop",
-    description:
-      "Compre carros novos, seminovos e usados na AutoShop. Encontre os melhores preços e condições do mercado com qualidade e segurança garantida",
+    title: "Jbtools Premium - Contas Digitais Premium",
   },
   robots: {
     index: true,

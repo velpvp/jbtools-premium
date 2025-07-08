@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -19,6 +19,26 @@ export default function ProductForm() {
   const [promoEnabled, setPromoEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [variations, setVariations] = useState<
+    { name: string; price: string }[]
+  >([]);
+
+  // Verifica se existem variações válidas (nome e preço preenchidos)
+  const hasVariations = variations.some(
+    (v) => v.name.trim() !== "" && v.price.trim() !== ""
+  );
+
+  // Limpa preço e promo e desabilita promo se tiver variações válidas
+  useEffect(() => {
+    if (hasVariations) {
+      setForm((prev) => ({
+        ...prev,
+        price: "",
+        promo: "",
+      }));
+      setPromoEnabled(false);
+    }
+  }, [hasVariations]);
 
   function handleChange(
     e: React.ChangeEvent<
@@ -36,10 +56,15 @@ export default function ProductForm() {
     if (!form.description.trim())
       newErrors.description = "Descrição é obrigatória";
     if (!form.category) newErrors.category = "Categoria é obrigatória";
-    if (!form.price || Number(form.price) <= 0)
-      newErrors.price = "Preço inválido";
-    if (promoEnabled && (!form.promo || Number(form.promo) <= 0))
-      newErrors.promo = "Preço promocional inválido";
+
+    // Valida preço e promo somente se não tiver variações
+    if (!hasVariations) {
+      if (!form.price || Number(form.price) <= 0)
+        newErrors.price = "Preço inválido";
+      if (promoEnabled && (!form.promo || Number(form.promo) <= 0))
+        newErrors.promo = "Preço promocional inválido";
+    }
+
     if (!image) newErrors.image = "Imagem é obrigatória";
 
     setErrors(newErrors);
@@ -70,12 +95,22 @@ export default function ProductForm() {
 
       await addDoc(collection(db, "products"), {
         ...form,
-        price: Number(form.price),
-        promo: promoEnabled && form.promo ? Number(form.promo) : null,
-        promoEnabled,
+        price: hasVariations ? null : Number(form.price),
+        promo: hasVariations
+          ? null
+          : promoEnabled && form.promo
+          ? Number(form.promo)
+          : null,
+        promoEnabled: hasVariations ? false : promoEnabled,
         image: imageUrl,
         active: form.active,
         createdAt: Timestamp.now(),
+        variations: variations
+          .filter((v) => v.name.trim() && v.price)
+          .map((v) => ({
+            name: v.name.trim(),
+            price: Number(v.price),
+          })),
       });
 
       toast.success("Produto cadastrado com sucesso!");
@@ -89,6 +124,7 @@ export default function ProductForm() {
       });
       setImage(null);
       setPromoEnabled(false);
+      setVariations([]);
     } catch (error) {
       console.error(error);
       toast.error("Erro ao cadastrar o produto.");
@@ -134,7 +170,10 @@ export default function ProductForm() {
           value={form.price}
           onChange={handleChange}
           placeholder="Digite o preço do produto"
-          className="w-full p-2 bg-slate-800 border border-blue-500 outline-none"
+          disabled={hasVariations}
+          className={`w-full p-2 bg-slate-800 border border-blue-500 outline-none ${
+            hasVariations ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         />
         {errors.price && <p className="text-red-500 text-sm">{errors.price}</p>}
       </div>
@@ -145,6 +184,7 @@ export default function ProductForm() {
             type="checkbox"
             checked={promoEnabled}
             onChange={() => setPromoEnabled((prev) => !prev)}
+            disabled={hasVariations}
           />
           Ativar promoção
         </label>
@@ -159,13 +199,70 @@ export default function ProductForm() {
             value={form.promo}
             onChange={handleChange}
             placeholder="Digite o preço promocional do produto"
-            className="w-full p-2 bg-slate-800 border border-blue-500 outline-none"
+            disabled={hasVariations}
+            className={`w-full p-2 bg-slate-800 border border-blue-500 outline-none ${
+              hasVariations ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           />
           {errors.promo && (
             <p className="text-red-500 text-sm">{errors.promo}</p>
           )}
         </div>
       )}
+
+      <div>
+        <label className="block text-sm font-medium mb-1">
+          Variações (opcional)
+        </label>
+        {variations.map((variation, index) => (
+          <div key={index} className="mb-2 flex gap-2 items-center">
+            <input
+              type="text"
+              placeholder="Nome (ex: Mensal)"
+              value={variation.name}
+              onChange={(e) =>
+                setVariations((prev) =>
+                  prev.map((v, i) =>
+                    i === index ? { ...v, name: e.target.value } : v
+                  )
+                )
+              }
+              className="flex-1 p-2 bg-slate-800 border border-blue-500 outline-none"
+            />
+            <input
+              type="number"
+              placeholder="Preço"
+              value={variation.price}
+              onChange={(e) =>
+                setVariations((prev) =>
+                  prev.map((v, i) =>
+                    i === index ? { ...v, price: e.target.value } : v
+                  )
+                )
+              }
+              className="w-[120px] p-2 bg-slate-800 border border-blue-500 outline-none"
+            />
+            <button
+              type="button"
+              onClick={() =>
+                setVariations((prev) => prev.filter((_, i) => i !== index))
+              }
+              className="text-red-500 text-xl"
+            >
+              &times;
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() =>
+            setVariations([...variations, { name: "", price: "" }])
+          }
+          className="mt-2 text-sm text-blue-500 hover:underline"
+        >
+          + Adicionar variação
+        </button>
+      </div>
 
       <div>
         <label className="block text-sm font-medium">Categoria</label>

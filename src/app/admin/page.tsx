@@ -2,16 +2,16 @@ import AdminContent from "./_components/Content";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Painel de Admin - AutoShop",
+  title: "Painel Administrativo - Jbtools",
   openGraph: {
-    title: "Painel de Admin - AutoShop",
+    title: "Painel Administrativo - Jbtools",
     type: "website",
-    siteName: "AutoShop",
+    siteName: "Jbtools",
     locale: "pt_BR",
   },
   twitter: {
     card: "summary",
-    title: "Painel de Admin - AutoShop",
+    title: "Painel Administrativo - Jbtools",
   },
   robots: {
     index: false,

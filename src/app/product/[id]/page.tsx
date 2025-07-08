@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import CarContent from "../_components/Content";
+import ProductContent from "../_components/Content";
 
 export async function generateMetadata({
   params,
@@ -23,16 +23,16 @@ export async function generateMetadata({
   const productsImage = productsData?.imagemCapa;
 
   return {
-    title: `${productsName} - AutoShop`,
+    title: `${productsName} - Jbtools`,
     description: `${productsDescription.slice(0, 160)}${
       productsDescription.length > 160 ? "..." : ""
     }`,
     openGraph: {
-      title: `${productsName} - AutoShop`,
+      title: `${productsName} - Jbtools`,
       description: `${productsDescription.slice(0, 160)}${
         productsDescription.length > 160 ? "..." : ""
       }`,
-      siteName: "AutoShop",
+      siteName: "Jbtools",
       locale: "pt_BR",
       type: "website",
       images: [
@@ -46,7 +46,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${productsName} - AutoShop`,
+      title: `${productsName} - Jbtools`,
       description: `${productsDescription.slice(0, 160)}${
         productsDescription.length > 160 ? "..." : ""
       }`,
@@ -55,6 +55,6 @@ export async function generateMetadata({
   };
 }
 
-export default function CarroPage() {
-  return <CarContent />;
+export default function ProductPage() {
+  return <ProductContent />;
 }

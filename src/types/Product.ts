@@ -3,9 +3,13 @@ export type Product = {
   name: string;
   description: string;
   image: string;
-  price: number;
+  price: number | null;
   category: "Ias" | "Streamings" | "Jogos" | "Outros";
   promo?: number | null;
   promoEnabled?: boolean;
   active: boolean;
+  variations?: {
+    name: string;
+    price: number;
+  }[];
 };
