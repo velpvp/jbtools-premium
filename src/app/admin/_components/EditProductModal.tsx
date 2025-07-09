@@ -246,11 +246,10 @@ export default function EditProductModal({
             onChange={handleChange}
             className="w-full p-2 bg-slate-800 border border-blue-500"
           >
-            <option value="">Selecione a categoria</option>
-            <option value="ias">IAs</option>
-            <option value="streamings">Streamings</option>
-            <option value="jogos">Jogos</option>
-            <option value="outros">Outros</option>
+            <option value="Ias">IAs</option>
+            <option value="Streamings">Streamings</option>
+            <option value="Jogos">Jogos</option>
+            <option value="Outros">Outros</option>
           </select>
 
           {/* Preço (se não tiver variações) */}
