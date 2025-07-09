@@ -279,7 +279,7 @@ export default function AdminProducts() {
                 <button
                   onClick={buscarMaisProdutos}
                   disabled={carregandoMais}
-                  className="w-full rounded border border-[var(--primary)] text-center py-1.5 font-medium transition duration-300 ease hover:bg-[var(--primary)] hover:text-white block cursor-pointer"
+                  className="w-full rounded border border-blue-500 text-center py-1.5 font-medium transition duration-300 ease hover:bg-blue-500 hover:text-white block cursor-pointer"
                 >
                   {carregandoMais ? "Carregando..." : "Ver mais"}
                 </button>

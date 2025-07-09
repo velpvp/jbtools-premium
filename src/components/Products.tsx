@@ -5,6 +5,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ProductCard from "@/components/ProductCard";
 import { Product } from "@/types/Product";
+import { useSearchParams } from "next/navigation";
 
 import {
   FaBoxOpen,
@@ -20,6 +21,8 @@ export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const searchParams = useSearchParams();
+  const searchTerm = searchParams.get("busca")?.toLowerCase() || "";
 
   useEffect(() => {
     async function fetchProducts() {
@@ -52,6 +55,10 @@ export default function Products() {
       : products.filter(
           (p) => p.category.toLowerCase() === selectedCategory.toLowerCase()
         );
+
+  const finalFilteredProducts = filteredProducts.filter((p) =>
+    p.name.toLowerCase().includes(searchTerm)
+  );
 
   return (
     <section className="main-content gap-6 p-6">
@@ -138,7 +145,7 @@ export default function Products() {
           </div>
         ) : (
           <div className="products-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {filteredProducts.map((product) => (
+            {finalFilteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

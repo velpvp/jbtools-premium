@@ -3,12 +3,18 @@ Senha: jbtools2000
 https://imgur.com/a/FP2X3Ii
 
 FAZER AINDA:
-[+/-] Fazer o SEO de todas as páginas (Falta só a pagina do produto e a nova página de checkout, mas revisar todas)
 [] Fazer a página de pagamentos
 [] Responsividade de todas as páginas
-[] Campo de busca da navbar funcional
 [] Cupons aparecerem na página inicial e gerenciar cupons no painel
-[] Arrumar para trocar o preço do produto pela variação (Ao escolher a opção de produtos variados desativa o preço padrao e promocional)
-[] Arrumar o botão de ver mais do painel em gerenciar produtos
-[] No painel colocar para editar as variações em produtos que tenham (EditModal.tsx)
-[] No carrinho arrumar o nome dos produtos que tenham variações (Ex: Se o nome for PRIME VIDEO e ter as variações mensal e anual mostrar o nome do produto e variação escolhida )
+
+
+[FEITO] Campo de busca da navbar funcional
+[FEITO] Arrumar para trocar o preço do produto pela variação (Ao escolher a opção de produtos variados desativa o preço padrao e promocional)
+[FEITO] No painel colocar para editar as variações em produtos que tenham (EditModal.tsx)
+[FEITO] No carrinho arrumar o nome dos produtos que tenham variações (Ex: Se o nome for PRIME VIDEO e ter as variações mensal e anual mostrar o nome do produto e variação escolhida )
+[FEITO] Fazer o SEO de todas as páginas (Falta só a pagina do produto e a nova página de checkout, mas revisar todas)
+[FEITO] Arrumar o botão de ver mais do painel em gerenciar produtos
+
+
+
+
