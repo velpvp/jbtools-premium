@@ -1,6 +1,5 @@
 "use client";
 
-import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -117,18 +116,10 @@ export default function Products() {
             <p>Carregando produtos...</p>
           </div>
         ) : (
-          <Suspense
-            fallback={
-              <p className="text-center text-gray-500">
-                Carregando produtos filtrados...
-              </p>
-            }
-          >
-            <ProductList
-              products={products}
-              selectedCategory={selectedCategory}
-            />
-          </Suspense>
+          <ProductList
+            products={products}
+            selectedCategory={selectedCategory}
+          />
         )}
       </div>
     </section>
