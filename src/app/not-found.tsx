@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import logoImg from "../../public/logo.webp";
+import logoImg from "../../public/logo-floating.png";
 
 export default function NotFound() {
   return (
     <main className="w-full min-h-screen flex justify-center items-center gap-10 flex-col p-6">
-      <Image src={logoImg} alt="Logo AutoShop" width={120} height={80} />
+      <Image src={logoImg} alt="Logo Jbtools" width={120} height={80} />
       <p>Página não encontrada</p>
       <Link
         href="/"

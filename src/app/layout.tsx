@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Jbtools Premium - Contas Digitais Premium",
     type: "website",
-    siteName: "AutoShop",
+    siteName: "Jbtools",
     locale: "pt_BR",
   },
   twitter: {
