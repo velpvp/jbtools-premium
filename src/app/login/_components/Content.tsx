@@ -49,7 +49,6 @@ export default function LoginContent() {
 
   return (
     <>
-      <Header />
       <main className="min-h-[90vh] flex items-center justify-center p-4">
         <form
           onSubmit={fazerLogin}
@@ -83,7 +82,6 @@ export default function LoginContent() {
           </button>
         </form>
       </main>
-      <Footer />
     </>
   );
 }
