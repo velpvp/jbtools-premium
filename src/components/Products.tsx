@@ -1,14 +1,11 @@
-"use client";
-
+import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import ProductCard from "@/components/ProductCard";
 import { Product } from "@/types/Product";
-import { useSearchParams } from "next/navigation";
+import ProductList from "@/components/ProductList";
 
 import {
-  FaBoxOpen,
   FaGlobe,
   FaRobot,
   FaTv,
@@ -21,8 +18,6 @@ export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const searchParams = useSearchParams();
-  const searchTerm = searchParams.get("busca")?.toLowerCase() || "";
 
   useEffect(() => {
     async function fetchProducts() {
@@ -33,7 +28,7 @@ export default function Products() {
           ...doc.data(),
         })) as Product[];
 
-        const ativos = data.filter((p) => p.active); // 👈 filtro
+        const ativos = data.filter((p) => p.active);
         setProducts(ativos);
       } catch (err) {
         console.error("Erro ao buscar produtos:", err);
@@ -48,17 +43,6 @@ export default function Products() {
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
   };
-
-  const filteredProducts =
-    selectedCategory === "all"
-      ? products
-      : products.filter(
-          (p) => p.category.toLowerCase() === selectedCategory.toLowerCase()
-        );
-
-  const finalFilteredProducts = filteredProducts.filter((p) =>
-    p.name.toLowerCase().includes(searchTerm)
-  );
 
   return (
     <section className="main-content gap-6 p-6">
@@ -79,7 +63,6 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "all" ? "active" : ""
               }`}
-              data-category="all"
               onClick={() => handleCategoryClick("all")}
             >
               <FaGlobe className="text-2xl icon-category" />
@@ -89,7 +72,6 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "ias" ? "active" : ""
               }`}
-              data-category="ias"
               onClick={() => handleCategoryClick("ias")}
             >
               <FaRobot className="text-2xl icon-category" />
@@ -99,7 +81,6 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "streamings" ? "active" : ""
               }`}
-              data-category="streamings"
               onClick={() => handleCategoryClick("streamings")}
             >
               <FaTv className="text-2xl icon-category" />
@@ -109,7 +90,6 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "jogos" ? "active" : ""
               }`}
-              data-category="jogos"
               onClick={() => handleCategoryClick("jogos")}
             >
               <FaGamepad className="text-2xl icon-category" />
@@ -119,7 +99,6 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "outros" ? "active" : ""
               }`}
-              data-category="outros"
               onClick={() => handleCategoryClick("outros")}
             >
               <FaEllipsisH className="text-2xl icon-category" />
@@ -135,20 +114,19 @@ export default function Products() {
             <div className="spinner border-t-4 border-blue-500 w-10 h-10 mx-auto rounded-full animate-spin mb-2" />
             <p>Carregando produtos...</p>
           </div>
-        ) : filteredProducts.length === 0 ? (
-          <div className="no-products text-center text-gray-500 mt-10">
-            <FaBoxOpen className="text-4xl mx-auto mb-2" />
-            <h3 className="text-xl font-semibold">Nenhum produto encontrado</h3>
-            <p className="text-sm">
-              Tente ajustar os filtros ou buscar por outro termo.
-            </p>
-          </div>
         ) : (
-          <div className="products-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {finalFilteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <Suspense
+            fallback={
+              <p className="text-center text-gray-500">
+                Carregando produtos filtrados...
+              </p>
+            }
+          >
+            <ProductList
+              products={products}
+              selectedCategory={selectedCategory}
+            />
+          </Suspense>
         )}
       </div>
     </section>
