@@ -6,14 +6,8 @@ import { db } from "@/lib/firebase";
 import { Product } from "@/types/Product";
 import ProductList from "@/components/ProductList";
 
-import {
-  FaGlobe,
-  FaRobot,
-  FaTv,
-  FaGamepad,
-  FaEllipsisH,
-  FaTag,
-} from "react-icons/fa";
+import { FaGlobe, FaRobot, FaTv, FaGamepad, FaEllipsisH } from "react-icons/fa";
+import Coupons from "./Coupons";
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -48,16 +42,11 @@ export default function Products() {
   return (
     <section className="main-content gap-6 p-6">
       <div>
-        <div className="mb-2 descontos">
-          <div className="py-1 px-4 font-bold flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis">
-            <FaTag className="shrink-0" />
-            <span className="truncate">10% OFF NA SUA PRIMEIRA COMPRA</span>
-          </div>
-        </div>
+        <Coupons />
 
         <div className="sidebar h-full">
           <div className="sidebar-header">
-            <h3 className="text-lg font-semibold mb-4">Categorias</h3>
+            <h3 className="text-lg font-semibold mb-4 ">Categorias</h3>
           </div>
           <ul className="category-list">
             <li

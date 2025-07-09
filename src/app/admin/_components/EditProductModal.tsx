@@ -6,6 +6,7 @@ import { db } from "@/lib/firebase";
 import { Product } from "@/types/Product";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface Variation {
   name: string;
@@ -214,7 +215,7 @@ export default function EditProductModal({
             <button
               onClick={onClose}
               type="button"
-              className="text-white text-2xl"
+              className="text-white text-2xl cursor-pointer"
             >
               &times;
             </button>
@@ -260,7 +261,7 @@ export default function EditProductModal({
                 type="number"
                 value={form.price ?? ""}
                 onChange={handleNumberChange}
-                className="w-full p-2 bg-slate-800 border border-blue-500"
+                className="w-full p-2 bg-slate-800 border border-blue-500 outline-none"
                 placeholder="Preço"
                 step="0.01"
               />
@@ -279,7 +280,7 @@ export default function EditProductModal({
                   type="number"
                   value={form.promo ?? ""}
                   onChange={handleNumberChange}
-                  className="w-full p-2 bg-slate-800 border border-blue-500"
+                  className="w-full p-2 bg-slate-800 border border-blue-500 outline-none"
                   placeholder="Preço promocional"
                   step="0.01"
                 />
@@ -289,46 +290,47 @@ export default function EditProductModal({
 
           {/* Variações */}
           <div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between flex-col items-start">
               <h3 className="font-semibold">Variações</h3>
+              {variations.map((v, i) => (
+                <div key={i} className="w-full flex gap-2 mb-2">
+                  <input
+                    type="text"
+                    placeholder="Nome"
+                    value={v.name}
+                    onChange={(e) =>
+                      handleVariationChange(i, "name", e.target.value)
+                    }
+                    className="flex-1 p-2 bg-slate-800 border border-blue-500 outline-none"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Preço"
+                    min="0"
+                    value={v.price}
+                    onChange={(e) =>
+                      handleVariationChange(i, "price", e.target.value)
+                    }
+                    className="w-32 p-2 bg-slate-800 border border-blue-500 outline-none"
+                    step="0.01"
+                  />
+                  <button
+                    onClick={() => removeVariation(i)}
+                    type="button"
+                    className="text-red-600 text-xl cursor-pointer transition hover:text-red-700"
+                  >
+                    <FaTrashAlt />
+                  </button>
+                </div>
+              ))}
               <button
                 type="button"
                 onClick={addVariation}
-                className="text-blue-400 text-sm"
+                className="text-blue-500 transition hover:text-blue-600 text-sm cursor-pointer mb-2"
               >
-                + Adicionar
+                + Adicionar variação
               </button>
             </div>
-            {variations.map((v, i) => (
-              <div key={i} className="flex gap-2 mt-2">
-                <input
-                  type="text"
-                  placeholder="Nome"
-                  value={v.name}
-                  onChange={(e) =>
-                    handleVariationChange(i, "name", e.target.value)
-                  }
-                  className="flex-1 p-2 bg-slate-800 border border-blue-500"
-                />
-                <input
-                  type="number"
-                  placeholder="Preço"
-                  value={v.price}
-                  onChange={(e) =>
-                    handleVariationChange(i, "price", e.target.value)
-                  }
-                  className="w-32 p-2 bg-slate-800 border border-blue-500"
-                  step="0.01"
-                />
-                <button
-                  onClick={() => removeVariation(i)}
-                  type="button"
-                  className="text-red-500 font-bold"
-                >
-                  &times;
-                </button>
-              </div>
-            ))}
           </div>
 
           {/* Imagem */}
@@ -354,14 +356,14 @@ export default function EditProductModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-white hover:text-gray-300"
+              className="px-4 py-2 text-white hover:text-gray-300 cursor-pointer transition"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+              className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 cursor-pointer transition"
             >
               {loading ? "Salvando..." : "Salvar"}
             </button>

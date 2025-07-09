@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import ProductForm from "./ProductForm";
 import AdminProducts from "./AdminProducts";
+import AdminCoupons from "./AdminCupons";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import logoFloating from "../../../../public/logo-floating.png";
@@ -14,7 +15,7 @@ import Link from "next/link";
 
 export default function AdminContent() {
   const router = useRouter();
-  const [view, setView] = useState<"form" | "manage">("form");
+  const [view, setView] = useState<"form" | "manage" | "coupons">("form");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -59,11 +60,21 @@ export default function AdminContent() {
           >
             Gerenciar Produtos
           </button>
+          <button
+            onClick={() => setView("coupons")}
+            className={`px-4 py-2 rounded-md text-sm font-medium cursor-pointer ${
+              view === "coupons"
+                ? "bg-blue-600 text-white"
+                : "bg-transparent text-blue-400 hover:bg-blue-600/20"
+            } transition`}
+          >
+            Cupons
+          </button>
         </nav>
       </header>
 
       <main className="w-full flex justify-center items-center px-2 py-5 z-2 relative">
-        {view === "form" ? (
+        {view === "form" && (
           <div className="w-full max-w-5xl bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-2">
             <div className="px-8 max-md:px-6 py-5">
               <h2 className="font-bold text-3xl mb-4 text-[#2563eb]">
@@ -72,9 +83,10 @@ export default function AdminContent() {
               <ProductForm />
             </div>
           </div>
-        ) : (
-          <AdminProducts />
         )}
+
+        {view === "manage" && <AdminProducts />}
+        {view === "coupons" && <AdminCoupons />}
       </main>
 
       <Footer />

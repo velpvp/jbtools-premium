@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import logoFloating from "../../public/logo-floating.png";
-import Link from "next/link";
-import { FaShoppingCart, FaSearch, FaCog } from "react-icons/fa";
+import { FaShoppingCart, FaSearch } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
+import CartSidebar from "./CartSidebar";
 
 export default function Header() {
   const { cart } = useCart();
@@ -13,6 +14,20 @@ export default function Header() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("busca") || "");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [animateCart, setAnimateCart] = useState(false);
+
+  const handleAnimate = () => {
+    setAnimateCart(true);
+    setTimeout(() => setAnimateCart(false), 400); // duração da animação
+  };
+
+  // Escuta o evento global "cart-ping"
+  useEffect(() => {
+    const handleCartPing = () => handleAnimate();
+    window.addEventListener("cart-ping", handleCartPing);
+    return () => window.removeEventListener("cart-ping", handleCartPing);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +46,7 @@ export default function Header() {
     <header className="header">
       <div className="container">
         <div className="header-content">
+          {/* Logo */}
           <div className="logo">
             <div className="logo-icon">
               <Image
@@ -41,6 +57,7 @@ export default function Header() {
             </div>
           </div>
 
+          {/* Busca */}
           <form onSubmit={handleSearch} className="search-container">
             <input
               type="text"
@@ -57,18 +74,26 @@ export default function Header() {
             </button>
           </form>
 
+          {/* Botão do carrinho com animação */}
           <div className="header-actions">
-            <Link href={`/cart`} className="btn-cart" id="cartBtn">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className={`btn-cart transition-all ${
+                animateCart ? "animate-ping-cart" : ""
+              }`}
+              aria-label="Abrir carrinho"
+            >
               <FaShoppingCart />
-              Carrinho (<span>{cart.length}</span>)
-            </Link>
-            <Link href={`/admin`} className="btn-manage bg-[#4f9cf9] ml-[10px]">
-              <FaCog />
-              Gerenciar
-            </Link>
+              <span className="max-md:hidden">
+                Carrinho (<span>{cart.length}</span>)
+              </span>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Sidebar de carrinho */}
+      {sidebarOpen && <CartSidebar onClose={() => setSidebarOpen(false)} />}
     </header>
   );
 }

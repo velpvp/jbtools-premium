@@ -2,10 +2,14 @@
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import qrcode from "../../../public/qrcode.png";
+import { FaCopy, FaPhone, FaWhatsapp } from "react-icons/fa";
+import { GiConfirmed } from "react-icons/gi";
 
 export default function CheckoutContent() {
   const { total } = useCart();
-  const chavePix = "chavepix@gmail.com";
+  const chavePix = "fc46bc2d-f69d-43e7-b059-d08637d8803";
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -22,7 +26,7 @@ export default function CheckoutContent() {
     setTimeout(() => {
       setIsLoading(false);
       setIsConfirmed(true);
-    }, 6000); // 6 segundos simulando confirmação
+    }, 6000);
   };
 
   const handleCancel = () => {
@@ -31,26 +35,17 @@ export default function CheckoutContent() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 max-w-md mx-auto text-center">
+      <div className="flex flex-col items-center justify-center p-8 max-w-md mx-auto text-center min-h-screen">
         <svg
-          className="animate-spin h-12 w-12 text-blue-600 mb-4"
+          className="animate-spin h-8 w-8 text-blue-600 mb-4"
           xmlns="http://www.w3.org/2000/svg"
-          fill="none"
           viewBox="0 0 24 24"
         >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
           <path
             className="opacity-75"
             fill="currentColor"
             d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-          ></path>
+          />
         </svg>
         <p className="text-lg font-semibold text-blue-600">
           Confirmando pagamento...
@@ -61,25 +56,32 @@ export default function CheckoutContent() {
 
   if (isConfirmed) {
     return (
-      <div className="max-w-md mx-auto p-6 text-center border border-blue-300 rounded-lg shadow-md bg-white">
-        <h2 className="text-2xl font-bold text-blue-700 mb-4">
+      <div className="bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] px-4 py-3 max-w-md max-md:max-w-full mx-auto text-center min-h-screen flex justify-center items-center flex-col">
+        <GiConfirmed className="w-20 h-20  text-blue-500 mb-4" />
+        <h2 className="text-2xl font-bold text-white mb-4">
           Pagamento Confirmado!
         </h2>
-        <p className="mb-6 text-gray-700">
-          Para resgatar seu produto, entre em contato conosco pelo botão abaixo
-          ou pelo WhatsApp:
+        <p className="mb-6 text-gray-200">
+          Nos chame em nosso suporte do whatsapp nos mandando comprovante e
+          dizendo o nome do seu produto
+        </p>
+
+        <p className="w-full text-white font-semibold rounded-md mb-4 transition flex justify-center items-center gap-1">
+          <FaPhone className="w-5 h-5" />
+          41 9684-4896
         </p>
         <a
-          href="https://wa.me/5511999999999"
+          href="https://api.whatsapp.com/send/?phone=554196844896&text&type=phone_number&app_absent=0"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-md transition"
+          className="w-full bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 rounded-md mb-4 transition cursor-pointer flex justify-center items-center gap-1"
         >
+          <FaWhatsapp className="w-5 h-5" />
           Falar no WhatsApp
         </a>
         <button
           onClick={handleCancel}
-          className="block mt-6 text-sm text-gray-500 underline hover:text-gray-700"
+          className="text-gray-300 transition hover:text-gray-400 text-sm cursor-pointer"
         >
           Voltar para o início
         </button>
@@ -88,36 +90,37 @@ export default function CheckoutContent() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg text-center">
-      <h1 className="text-3xl font-extrabold mb-6 text-blue-700">
-        Pague agora
+    <div className="bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] px-4 py-3 max-w-md max-md:max-w-full mx-auto text-center min-h-screen flex justify-center items-center flex-col">
+      <h1 className="text-3xl font-extrabold mb-6">
+        Pague
         <br />
-        <span className="text-4xl block mt-2">
+        <span className="text-4xl block mt-2 text-blue-700">
           R$ {Number(total).toFixed(2).replace(".", ",")}
         </span>
       </h1>
 
       {/* QR Code - Troque o src pela sua imagem */}
       <div className="mx-auto w-48 h-48 mb-6">
-        <img
-          src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=pix%3Achavepix%40gmail.com"
+        <Image
+          src={qrcode}
           alt="QR Code Pix"
-          className="w-full h-full object-contain rounded-lg shadow-md"
+          className="w-full h-full object-contain rounded-lg"
           loading="lazy"
         />
       </div>
 
-      <p className="mb-1 font-semibold text-gray-700">Chave PIX:</p>
+      <p className="mb-1 font-semibold text-gray-200">Chave PIX:</p>
       <div
-        className="select-all bg-gray-100 p-3 rounded-md font-mono text-blue-900 mb-3 cursor-pointer"
+        className="select-all w-full p-2 bg-slate-800 border border-blue-500 outline-none mb-4 cursor-pointer flex justify-between items-center"
         onClick={handleCopy}
       >
         {chavePix}
+        <FaCopy />
       </div>
       <button
         onClick={handleCopy}
-        className={`w-full py-2 mb-6 rounded-md font-semibold transition ${
-          copied ? "bg-green-600" : "bg-blue-600 hover:bg-blue-700"
+        className={`w-full py-2 mb-6 rounded-md font-semibold transition cursor-pointer ${
+          copied ? "bg-green-600" : "bg-transparent"
         } text-white`}
       >
         {copied ? "Chave copiada!" : "Copiar chave"}
@@ -125,14 +128,14 @@ export default function CheckoutContent() {
 
       <button
         onClick={handleConfirmPayment}
-        className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-md mb-4 transition"
+        className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-md mb-4 transition cursor-pointer"
       >
         Já realizei o pagamento
       </button>
 
       <button
         onClick={handleCancel}
-        className="text-gray-500 underline hover:text-gray-700 text-sm"
+        className="text-gray-300 transition hover:text-gray-400 text-sm cursor-pointer"
       >
         Cancelar e voltar ao início
       </button>

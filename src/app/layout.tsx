@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import ClientWrapper from "@/components/ClientWrapper"; // ✅ IMPORTANTE
+import ClientWrapper from "@/components/ClientWrapper";
 
 const montserrat = Montserrat({
   subsets: ["latin"],

@@ -1,3 +1,4 @@
+import { FaInstagramSquare } from "react-icons/fa";
 export default function Footer() {
   return (
     <footer className="footer">
@@ -34,6 +35,16 @@ export default function Footer() {
           <div className="footer-section">
             <h4>Contato</h4>
             <p className="text-[14px]">WhatsApp: 41 9684-4896</p>
+          </div>
+          <div className="footer-section">
+            <h4>Redes Sociais</h4>
+            <a
+              href="https://www.instagram.com/jbtools.iaa/"
+              target="_blank"
+              className="inline-block text-[14px] text-blue-500 transition duration-300 ease hover:text-blue-600"
+            >
+              <FaInstagramSquare className="w-6 h-6" />
+            </a>
           </div>
         </div>
         <div className="footer-bottom">

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { FaTrashAlt } from "react-icons/fa";
 
 export default function ProductForm() {
   const [form, setForm] = useState({
@@ -232,6 +233,7 @@ export default function ProductForm() {
             <input
               type="number"
               placeholder="Preço"
+              min="0"
               value={variation.price}
               onChange={(e) =>
                 setVariations((prev) =>
@@ -247,9 +249,9 @@ export default function ProductForm() {
               onClick={() =>
                 setVariations((prev) => prev.filter((_, i) => i !== index))
               }
-              className="text-red-500 text-xl"
+              className="text-red-600 text-xl cursor-pointer transition hover:text-red-700"
             >
-              &times;
+              <FaTrashAlt />
             </button>
           </div>
         ))}
@@ -258,7 +260,7 @@ export default function ProductForm() {
           onClick={() =>
             setVariations([...variations, { name: "", price: "" }])
           }
-          className="mt-2 text-sm text-blue-500 hover:underline"
+          className="mt-2 text-sm text-blue-500 hover:text-blue-600 transition cursor-pointer"
         >
           + Adicionar variação
         </button>

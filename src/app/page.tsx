@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ImagesCarousel from "@/components/ImagesCarousel";
 import Products from "@/components/Products";
+import ButtonWhats from "@/components/ButtonWhats";
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
         <ImagesCarousel />
         <Products />
       </main>
-
+      <ButtonWhats />
       <Footer />
     </Suspense>
   );

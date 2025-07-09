@@ -37,7 +37,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <div className="product-card p-4 rounded border shadow hover:shadow-lg transition">
-      <div className="product-image mb-2">
+      <Link href={`/product/${product.id}`} className="product-image mb-2">
         <Image
           src={product.image}
           alt={product.name}
@@ -45,17 +45,21 @@ export default function ProductCard({ product }: { product: Product }) {
           height={1144}
           className="w-full object-cover rounded"
         />
-      </div>
+      </Link>
 
-      <h3 className="product-title font-bold text-lg truncate">
-        {product.name}
-      </h3>
+      <Link href={`/product/${product.id}`}>
+        <h3 className="product-title font-bold text-lg truncate">
+          {product.name}
+        </h3>
+      </Link>
 
-      <p className="text-[1rem] text-gray-100 mb-2">
-        {product.description.length > 120
-          ? product.description.slice(0, 120) + "..."
-          : product.description}
-      </p>
+      <Link href={`/product/${product.id}`}>
+        <p className="text-[1rem] text-gray-100 mb-2">
+          {product.description.length > 120
+            ? product.description.slice(0, 120) + "..."
+            : product.description}
+        </p>
+      </Link>
 
       <div className="product-price text-sm">
         {hasVariations ? "A partir de" : "Preço"}
@@ -75,7 +79,10 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {!hasVariations && (
           <button
-            onClick={() => addToCart(product)}
+            onClick={() => {
+              addToCart(product);
+              window.dispatchEvent(new Event("cart-ping"));
+            }}
             className="btn-add-cart flex-1 bg-gray-200 text-black py-1 rounded hover:bg-gray-300 flex items-center justify-center gap-1"
           >
             <FaCartShopping />

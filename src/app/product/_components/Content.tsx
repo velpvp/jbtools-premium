@@ -18,6 +18,7 @@ import {
   FaCreditCard,
 } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
+import CartSidebar from "@/components/CartSidebar";
 
 export default function ProductContent() {
   const params = useParams();
@@ -32,6 +33,7 @@ export default function ProductContent() {
     name: string;
     price: number;
   } | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -123,7 +125,7 @@ export default function ProductContent() {
   const handleBuyNow = () => {
     if (isBuyDisabled) return;
 
-    addToCart(product, selectedVariation ?? null, quantity, true);
+    addToCart(product, selectedVariation ?? null, quantity, false);
   };
 
   return (
@@ -143,11 +145,14 @@ export default function ProductContent() {
               width={1920}
               height={1144}
             />
+            <p className="max-md:hidden product-description whitespace-pre-line pt-2">
+              {product.description}
+            </p>
           </div>
 
           <div className="product-info">
             <h1 className="product-title-name">{product.name}</h1>
-            <p className="product-description whitespace-pre-line">
+            <p className="md:hidden product-description whitespace-pre-line pt-2">
               {product.description}
             </p>
             <div className="product-category">
@@ -182,15 +187,15 @@ export default function ProductContent() {
               {product.variations && product.variations.length > 0 && (
                 <div className="mt-3">
                   <label className="text-sm font-medium block mb-1">
-                    Selecione uma variação:
+                    Selecione um item:
                   </label>
                   <select
                     value={selectedVariation?.name || ""}
                     onChange={handleVariationChange}
-                    className="p-2 bg-slate-800 border border-blue-500 w-full"
+                    className="p-2 bg-black/10 border border-gray-500 outline-none rounded-lg"
                   >
                     {product.variations?.map((v, i) => (
-                      <option key={i} value={v.name}>
+                      <option key={i} value={v.name} className="bg-blue-950">
                         {v.name} — R$ {v.price.toFixed(2).replace(".", ",")}
                       </option>
                     ))}
@@ -238,15 +243,19 @@ export default function ProductContent() {
                   </button>
                   <button
                     className="btn-secondary"
-                    onClick={handleBuyNow}
+                    onClick={() => {
+                      handleBuyNow();
+                      setSidebarOpen(true);
+                    }}
                     disabled={isBuyDisabled}
                   >
                     <FaCreditCard />
                     Comprar Agora
                   </button>
+
                   {isBuyDisabled && (
                     <p className="text-red-400 text-sm mt-1">
-                      Selecione uma variação para continuar
+                      Selecione um item para continuar
                     </p>
                   )}
                 </div>
@@ -260,6 +269,8 @@ export default function ProductContent() {
           </div>
         </div>
       </div>
+      {/* Sidebar de carrinho */}
+      {sidebarOpen && <CartSidebar onClose={() => setSidebarOpen(false)} />}
     </main>
   );
 }
