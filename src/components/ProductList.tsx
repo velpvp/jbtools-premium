@@ -1,9 +1,9 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import ProductCard from "@/components/ProductCard";
 import { Product } from "@/types/Product";
-import { FaBoxOpen } from "react-icons/fa6";
+import { useSearchParams } from "next/navigation";
+import ProductCard from "./ProductCard";
+import { FaBoxOpen } from "react-icons/fa";
 
 interface ProductListProps {
   products: Product[];
@@ -30,7 +30,7 @@ export default function ProductList({
 
   if (finalFiltered.length === 0) {
     return (
-      <div className="no-products flex justify-center items-center text-center text-gray-500 mt-10">
+      <div className="no-products text-center text-gray-500 mt-10">
         <FaBoxOpen className="text-4xl mx-auto mb-2" />
         <h3 className="text-xl font-semibold">Nenhum produto encontrado</h3>
         <p className="text-sm">
