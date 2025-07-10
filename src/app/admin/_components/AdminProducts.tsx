@@ -182,7 +182,7 @@ export default function AdminProducts() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-        className="w-full max-w-5xl bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-2"
+        className="w-full max-w-5xl min-h-[50vh] bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-2"
       >
         <div className="px-8 max-md:px-6 py-5">
           <h2 className="font-bold text-3xl mb-4 text-[#2563eb]">

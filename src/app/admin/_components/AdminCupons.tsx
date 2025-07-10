@@ -132,7 +132,7 @@ export default function AdminCoupons() {
   }
 
   return (
-    <div className="w-full max-w-5xl bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-6">
+    <div className="w-full max-w-5xl min-h-[50vh] bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-6">
       <h2 className="text-3xl font-bold text-[#2563eb] mb-4">
         Gerenciar Cupons
       </h2>
