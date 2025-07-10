@@ -19,6 +19,8 @@ import {
 } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
 import CartSidebar from "@/components/CartSidebar";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function ProductContent() {
   const params = useParams();
@@ -129,148 +131,157 @@ export default function ProductContent() {
   };
 
   return (
-    <main className="product-container">
-      <Link href="/" className="back-button">
-        <FaArrowLeft />
-        Voltar para a loja
-      </Link>
+    <>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        className="product-container"
+      >
+        <Link href="/" className="back-button">
+          <FaArrowLeft />
+          Voltar para a loja
+        </Link>
 
-      <div id="productContent">
-        <div className="product-header">
-          <div className="product-image-container">
-            <Image
-              src={product.image}
-              className="product-img"
-              alt="Produto"
-              width={1920}
-              height={1144}
-            />
-            <p className="max-md:hidden product-description whitespace-pre-line pt-2">
-              {product.description}
-            </p>
-          </div>
-
-          <div className="product-info">
-            <h1 className="product-title-name">{product.name}</h1>
-            <p className="md:hidden product-description whitespace-pre-line pt-2">
-              {product.description}
-            </p>
-            <div className="product-category">
-              <FaTag />
-              <span>{product.category}</span>
+        <div id="productContent">
+          <div className="product-header">
+            <div className="product-image-container">
+              <Image
+                src={product.image}
+                className="product-img"
+                alt="Produto"
+                width={1920}
+                height={1144}
+              />
+              <p className="max-md:hidden product-description whitespace-pre-line pt-2">
+                {product.description}
+              </p>
             </div>
 
-            <div className="price-section">
-              <div className="price-label">Preço unitário:</div>
-              <div className="price-value">
-                {product.variations && product.variations.length > 0 ? (
-                  <span>
-                    R$ {selectedVariation?.price.toFixed(2).replace(".", ",")}
-                  </span>
-                ) : (
-                  <>
+            <div className="product-info">
+              <h1 className="product-title-name">{product.name}</h1>
+              <p className="md:hidden product-description whitespace-pre-line pt-2">
+                {product.description}
+              </p>
+              <div className="product-category">
+                <FaTag />
+                <span>{product.category}</span>
+              </div>
+
+              <div className="price-section">
+                <div className="price-label">Preço unitário:</div>
+                <div className="price-value">
+                  {product.variations && product.variations.length > 0 ? (
                     <span>
-                      R$ {(getUnitPrice() ?? 0).toFixed(2).replace(".", ",")}
+                      R$ {selectedVariation?.price.toFixed(2).replace(".", ",")}
                     </span>
+                  ) : (
+                    <>
+                      <span>
+                        R$ {(getUnitPrice() ?? 0).toFixed(2).replace(".", ",")}
+                      </span>
 
-                    {product.promoEnabled &&
-                      product.promo &&
-                      !selectedVariation && (
-                        <span className="line-through text-gray-400 text-base font-medium ml-2">
-                          R$ {(product.price ?? 0).toFixed(2).replace(".", ",")}
-                        </span>
-                      )}
-                  </>
-                )}
-              </div>
-
-              {product.variations && product.variations.length > 0 && (
-                <div className="mt-3">
-                  <label className="text-sm font-medium block mb-1">
-                    Selecione um item:
-                  </label>
-                  <select
-                    value={selectedVariation?.name || ""}
-                    onChange={handleVariationChange}
-                    className="p-2 bg-black/10 border border-gray-500 outline-none rounded-lg"
-                  >
-                    {product.variations?.map((v, i) => (
-                      <option key={i} value={v.name} className="bg-blue-950">
-                        {v.name} — R$ {v.price.toFixed(2).replace(".", ",")}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              <div className="quantity-section mt-4">
-                <label className="quantity-label">Quantidade:</label>
-                <div className="quantity-controls">
-                  <button className="quantity-btn" onClick={handleMinusClick}>
-                    <FaMinus />
-                  </button>
-                  <input
-                    type="number"
-                    className="quantity-input"
-                    value={quantity}
-                    min={1}
-                    max={999}
-                    onChange={(e) =>
-                      handleQuantityChange(Number(e.target.value))
-                    }
-                  />
-                  <button className="quantity-btn" onClick={handlePlusClick}>
-                    <FaPlus />
-                  </button>
-                </div>
-                <div className="total-price mt-2">
-                  <div className="total-label">Total:</div>
-                  <div className="total-value">
-                    R$ {totalPrice.toFixed(2).replace(".", ",")}
-                  </div>
-                </div>
-              </div>
-
-              {product.active ? (
-                <div className="action-buttons mt-4">
-                  <button
-                    className="btn-primary"
-                    onClick={handleAddToCart}
-                    disabled={isBuyDisabled}
-                  >
-                    <FaShoppingCart />
-                    Adicionar ao Carrinho
-                  </button>
-                  <button
-                    className="btn-secondary"
-                    onClick={() => {
-                      handleBuyNow();
-                      setSidebarOpen(true);
-                    }}
-                    disabled={isBuyDisabled}
-                  >
-                    <FaCreditCard />
-                    Comprar Agora
-                  </button>
-
-                  {isBuyDisabled && (
-                    <p className="text-red-400 text-sm mt-1">
-                      Selecione um item para continuar
-                    </p>
+                      {product.promoEnabled &&
+                        product.promo &&
+                        !selectedVariation && (
+                          <span className="line-through text-gray-400 text-base font-medium ml-2">
+                            R${" "}
+                            {(product.price ?? 0).toFixed(2).replace(".", ",")}
+                          </span>
+                        )}
+                    </>
                   )}
                 </div>
-              ) : (
-                <div className="mt-4 text-red-500 font-semibold text-center border border-red-500 p-3 rounded">
-                  Este anúncio está desativado e indisponível para compra no
-                  momento.
+
+                {product.variations && product.variations.length > 0 && (
+                  <div className="mt-3">
+                    <label className="text-sm font-medium block mb-1">
+                      Selecione um item:
+                    </label>
+                    <select
+                      value={selectedVariation?.name || ""}
+                      onChange={handleVariationChange}
+                      className="p-2 bg-black/10 border border-gray-500 outline-none rounded-lg"
+                    >
+                      {product.variations?.map((v, i) => (
+                        <option key={i} value={v.name} className="bg-blue-950">
+                          {v.name} — R$ {v.price.toFixed(2).replace(".", ",")}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                <div className="quantity-section mt-4">
+                  <label className="quantity-label">Quantidade:</label>
+                  <div className="quantity-controls">
+                    <button className="quantity-btn" onClick={handleMinusClick}>
+                      <FaMinus />
+                    </button>
+                    <input
+                      type="number"
+                      className="quantity-input"
+                      value={quantity}
+                      min={1}
+                      max={999}
+                      onChange={(e) =>
+                        handleQuantityChange(Number(e.target.value))
+                      }
+                    />
+                    <button className="quantity-btn" onClick={handlePlusClick}>
+                      <FaPlus />
+                    </button>
+                  </div>
+                  <div className="total-price mt-2">
+                    <div className="total-label">Total:</div>
+                    <div className="total-value">
+                      R$ {totalPrice.toFixed(2).replace(".", ",")}
+                    </div>
+                  </div>
                 </div>
-              )}
+
+                {product.active ? (
+                  <div className="action-buttons mt-4">
+                    <button
+                      className="btn-primary"
+                      onClick={handleAddToCart}
+                      disabled={isBuyDisabled}
+                    >
+                      <FaShoppingCart />
+                      Adicionar ao Carrinho
+                    </button>
+                    <button
+                      className="btn-secondary"
+                      onClick={() => {
+                        handleBuyNow();
+                        setSidebarOpen(true);
+                      }}
+                      disabled={isBuyDisabled}
+                    >
+                      <FaCreditCard />
+                      Comprar Agora
+                    </button>
+
+                    {isBuyDisabled && (
+                      <p className="text-red-400 text-sm mt-1">
+                        Selecione um item para continuar
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="mt-4 text-red-500 font-semibold text-center border border-red-500 p-3 rounded">
+                    Este anúncio está desativado e indisponível para compra no
+                    momento.
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {/* Sidebar de carrinho */}
-      {sidebarOpen && <CartSidebar onClose={() => setSidebarOpen(false)} />}
-    </main>
+      </motion.div>
+      <AnimatePresence>
+        {sidebarOpen && <CartSidebar onClose={() => setSidebarOpen(false)} />}
+      </AnimatePresence>
+    </>
   );
 }

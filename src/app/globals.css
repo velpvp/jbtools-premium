@@ -18,6 +18,17 @@ body {
   animation: float 3s ease-in-out infinite;
 }
 
+input.no-spinners::-webkit-outer-spin-button,
+input.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input.no-spinners {
+  -moz-appearance: textfield;
+}
+
+
 /* Header */
 .header {
   background: rgba(10, 10, 10, 0.95);
@@ -1079,5 +1090,5 @@ body {
 
 .animate-slide {
   animation: slide linear infinite;
-  animation-duration: 25s;
+  animation-duration: 30s;
 }

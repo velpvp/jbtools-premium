@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "@/components/ClientWrapper";
+import { AosInit } from "@/components/aos-init";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${montserrat.variable} font-sans antialiased`}>
+        <AosInit />
         <ClientWrapper>{children}</ClientWrapper>
         <ToastContainer theme="dark" position="bottom-right" autoClose={3000} />
       </body>

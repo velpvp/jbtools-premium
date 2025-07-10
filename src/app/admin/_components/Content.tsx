@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import Image from "next/image";
 import logoFloating from "../../../../public/logo-floating.png";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function AdminContent() {
   const router = useRouter();
@@ -73,16 +74,21 @@ export default function AdminContent() {
         </nav>
       </header>
 
-      <main className="w-full flex justify-center items-center px-2 py-5 z-2 relative">
+      <main className="w-full min-h-[90vh] flex justify-center items-start px-2 py-5 z-2 relative">
         {view === "form" && (
-          <div className="w-full max-w-5xl bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-2">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            className="w-full max-w-5xl bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-2"
+          >
             <div className="px-8 max-md:px-6 py-5">
               <h2 className="font-bold text-3xl mb-4 text-[#2563eb]">
                 Cadastrar Produto
               </h2>
               <ProductForm />
             </div>
-          </div>
+          </motion.div>
         )}
 
         {view === "manage" && <AdminProducts />}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaTimes } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
+import { motion } from "framer-motion";
 
 type CartSidebarProps = {
   onClose: () => void;
@@ -41,14 +42,26 @@ export default function CartSidebar({ onClose }: CartSidebarProps) {
   return (
     <>
       {/* Fundo semi-transparente */}
-      <div
+      <motion.div
+        key="backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.3 }}
+        exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 h-full min-h-screen bg-black/30 z-40"
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1], delay: 0.05 }}
+        className="fixed inset-0 h-full min-h-screen bg-black z-40 overflow-hidden"
         aria-label="Fechar carrinho"
       />
 
-      {/* Sidebar */}
-      <aside className="fixed top-0 right-0 h-full min-h-screen z-99 w-96 bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] shadow-lg flex flex-col p-4">
+      {/* Sidebar animada */}
+      <motion.aside
+        key="sidebar"
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        className="fixed top-0 right-0 h-full min-h-screen z-50 w-80 bg-[rgba(10,10,10,0.95)] shadow-lg flex flex-col p-4"
+      >
         <header className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold text-[#2563eb]">Carrinho</h2>
           <button
@@ -79,7 +92,7 @@ export default function CartSidebar({ onClose }: CartSidebarProps) {
                     key={`${item.product.id}-${
                       item.variation?.name ?? "default"
                     }`}
-                    className="flex items-center gap-4 justify-between p-4 border-b border-[#1c388e7c]"
+                    className="flex items-center gap-2 justify-center flex-col p-4 border-b border-[#1c388e7c]"
                   >
                     <div className="flex items-center flex-col gap-4 justify-center p-4">
                       <div className="flex items-center justify-between gap-4">
@@ -110,9 +123,28 @@ export default function CartSidebar({ onClose }: CartSidebarProps) {
                         >
                           −
                         </button>
-                        <span className="w-6 text-center font-medium">
-                          {item.quantity}
-                        </span>
+                        <input
+                          type="number"
+                          min={1}
+                          max={999}
+                          className="no-spinners w-10 text-center font-medium bg-transparent border-none outline-none text-white appearance-none hide-arrows"
+                          value={item.quantity}
+                          onChange={(e) => {
+                            const newQuantity = parseInt(e.target.value, 10);
+                            if (
+                              !isNaN(newQuantity) &&
+                              newQuantity >= 1 &&
+                              item.product
+                            ) {
+                              updateQuantity(
+                                item.product.id,
+                                item.variation?.name ?? null,
+                                newQuantity
+                              );
+                            }
+                          }}
+                        />
+
                         <button
                           onClick={() => handleIncrease(item)}
                           className="quantity-btn"
@@ -150,13 +182,15 @@ export default function CartSidebar({ onClose }: CartSidebarProps) {
                         </div>
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleRemove(item)}
-                      className="text-red-600 transition duration-300 ease hover:text-red-800 font-bold text-xl cursor-pointer"
-                      aria-label="Remover item"
-                    >
-                      <IoTrashBin />
-                    </button>
+                    <div className="w-full flex justify-end">
+                      <button
+                        onClick={() => handleRemove(item)}
+                        className=" text-red-600 transition duration-300 ease hover:text-red-800 font-medium cursor-pointer flex justify-end items-center gap-1"
+                        aria-label="Remover item"
+                      >
+                        <IoTrashBin className="w-4 h-4" />
+                      </button>
+                    </div>
                   </li>
                 );
               })}
@@ -187,13 +221,13 @@ export default function CartSidebar({ onClose }: CartSidebarProps) {
 
             <Link
               href="/checkout"
-              className="block w-full text-center bg-[#2563eb] text-white font-semibold py-3 rounded hover:bg-[#1d4ed8] transition"
+              className="block w-full text-center bg-[#2563eb] text-white font-semibold py-3 rounded hover:bg-[#1d4ed8] transition max-md:mb-10"
             >
               Finalizar Compra
             </Link>
           </>
         )}
-      </aside>
+      </motion.aside>
     </>
   );
 }

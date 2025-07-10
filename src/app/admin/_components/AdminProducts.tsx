@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 import { Product } from "@/types/Product";
 import EditProductModal from "./EditProductModal";
+import { motion } from "framer-motion";
 
 const LIMITE_POR_PAGINA = 10;
 
@@ -177,7 +178,12 @@ export default function AdminProducts() {
 
   return (
     <>
-      <div className="w-full max-w-5xl bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-2">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        className="w-full max-w-5xl bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-2"
+      >
         <div className="px-8 max-md:px-6 py-5">
           <h2 className="font-bold text-3xl mb-4 text-[#2563eb]">
             Gerenciar Produtos
@@ -195,83 +201,96 @@ export default function AdminProducts() {
           )}
           <div className="max-h-[70vh] overflow-y-scroll overflow-x-auto">
             <ul className="">
-              {products.map((product) => (
-                <li
-                  key={product.id}
-                  className="w-full flex items-center justify-between max-md:flex-col max-md:gap-4 p-4 border-b border-[#1c388e7c]"
-                >
-                  <div className="w-full flex items-center gap-4">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      width={80}
-                      height={80}
-                      className="w-20 h-20 aspect-square object-cover rounded"
-                    />
-                    <div>
-                      <h3 className="font-semibold text-lg">{product.name}</h3>
-                      <p>
-                        Preço:{" "}
-                        <span className="text-[#568cff] font-semibold">
-                          R${" "}
-                          {product.promoEnabled && product.promo
-                            ? Number(product.promo).toLocaleString("pt-BR", {
-                                minimumFractionDigits: 2,
-                              })
-                            : Number(product.price).toLocaleString("pt-BR", {
-                                minimumFractionDigits: 2,
-                              })}
-                        </span>
-                      </p>
+              {products.map((product) => {
+                const hasVariations = (product.variations ?? []).length > 0;
+                const lowestVariationPrice = hasVariations
+                  ? Math.min(...product.variations!.map((v) => v.price))
+                  : null;
+
+                return (
+                  <li
+                    key={product.id}
+                    className="w-full flex items-center justify-between max-md:flex-col max-md:gap-4 p-4 border-b border-[#1c388e7c]"
+                  >
+                    <div className="w-full flex items-center gap-4">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        width={80}
+                        height={80}
+                        className="w-20 h-20 aspect-square object-cover rounded"
+                      />
+                      <div>
+                        <h3 className="font-semibold text-lg">
+                          {product.name}
+                        </h3>
+                        <p>
+                          Preço:{" "}
+                          <span className="text-[#568cff] font-semibold">
+                            R${" "}
+                            {hasVariations && lowestVariationPrice !== null
+                              ? lowestVariationPrice.toLocaleString("pt-BR", {
+                                  minimumFractionDigits: 2,
+                                })
+                              : product.promoEnabled && product.promo
+                              ? Number(product.promo).toLocaleString("pt-BR", {
+                                  minimumFractionDigits: 2,
+                                })
+                              : Number(product.price).toLocaleString("pt-BR", {
+                                  minimumFractionDigits: 2,
+                                })}
+                          </span>
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setProdutoSelecionado(product);
-                        setModalEdicaoAberta(true);
-                      }}
-                      className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded cursor-pointer transition"
-                    >
-                      <FaEdit />
-                      Editar
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          setProdutoSelecionado(product);
+                          setModalEdicaoAberta(true);
+                        }}
+                        className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded cursor-pointer transition"
+                      >
+                        <FaEdit />
+                        Editar
+                      </button>
 
-                    <button
-                      onClick={() => {
-                        setProdutoSelecionado(product);
-                        setModalExclusaoAberto(true);
-                      }}
-                      className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded cursor-pointer transition"
-                    >
-                      <FaTrashAlt />
-                      Excluir
-                    </button>
+                      <button
+                        onClick={() => {
+                          setProdutoSelecionado(product);
+                          setModalExclusaoAberto(true);
+                        }}
+                        className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded cursor-pointer transition"
+                      >
+                        <FaTrashAlt />
+                        Excluir
+                      </button>
 
-                    <button
-                      onClick={() => alternarAtivo(product)}
-                      className={`flex items-center gap-1 ${
-                        product.active
-                          ? "bg-yellow-600 hover:bg-yellow-700"
-                          : "bg-green-600 hover:bg-green-700"
-                      } text-white px-4 py-2 rounded cursor-pointer transition`}
-                    >
-                      {product.active ? (
-                        <>
-                          <FaTimesCircle />
-                          Desativar
-                        </>
-                      ) : (
-                        <>
-                          <FaCheckCircle />
-                          Ativar
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </li>
-              ))}
+                      <button
+                        onClick={() => alternarAtivo(product)}
+                        className={`flex items-center gap-1 ${
+                          product.active
+                            ? "bg-yellow-600 hover:bg-yellow-700"
+                            : "bg-green-600 hover:bg-green-700"
+                        } text-white px-4 py-2 rounded cursor-pointer transition`}
+                      >
+                        {product.active ? (
+                          <>
+                            <FaTimesCircle />
+                            Desativar
+                          </>
+                        ) : (
+                          <>
+                            <FaCheckCircle />
+                            Ativar
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
 
             {!modoBusca && temMais && (
@@ -287,11 +306,16 @@ export default function AdminProducts() {
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
       {/* Modal de Exclusão */}
       {modalExclusaoAberto && produtoSelecionado && (
         <div className="fixed inset-0 bg-[#000000a4] flex items-center justify-center z-50">
-          <div className="bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-6 shadow-lg w-[90%] max-w-md">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            className="bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-6 shadow-lg w-[90%] max-w-md"
+          >
             <h3 className="font-bold mb-4 text-2xl text-[#2563eb]">
               Confirmar Exclusão
             </h3>
@@ -313,7 +337,7 @@ export default function AdminProducts() {
                 Confirmar
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
       {/* Modal de Edição */}

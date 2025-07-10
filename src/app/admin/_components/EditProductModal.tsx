@@ -7,6 +7,7 @@ import { Product } from "@/types/Product";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { FaTrashAlt } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 interface Variation {
   name: string;
@@ -34,6 +35,11 @@ async function uploadToCloudinary(file: File): Promise<string> {
 
   const data = await res.json();
   return data.secure_url;
+}
+function hasDuplicateVariationNames(variations: Variation[]) {
+  const names = variations.map((v) => v.name.trim().toLowerCase());
+  const unique = new Set(names);
+  return names.length !== unique.size;
 }
 
 export default function EditProductModal({
@@ -64,6 +70,7 @@ export default function EditProductModal({
 
   const [newImage, setNewImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [variationErrors, setVariationErrors] = useState<string[]>([]);
 
   const hasValidVariations = variations.some(
     (v) => v.name.trim() !== "" && v.price !== "" && !isNaN(Number(v.price))
@@ -125,6 +132,23 @@ export default function EditProductModal({
           : v
       )
     );
+
+    if (field === "name") {
+      setVariationErrors((prevErrors) => {
+        const updated = [...prevErrors];
+        const newName = value.trim().toLowerCase();
+        const isDuplicate = variations.some(
+          (v, i) =>
+            i !== index &&
+            v.name.trim().toLowerCase() === newName &&
+            newName !== ""
+        );
+        updated[index] = isDuplicate
+          ? "Esse nome de variação já foi usado."
+          : "";
+        return updated;
+      });
+    }
   };
 
   const addVariation = () => {
@@ -133,6 +157,7 @@ export default function EditProductModal({
 
   const removeVariation = (index: number) => {
     setVariations((prev) => prev.filter((_, i) => i !== index));
+    setVariationErrors((prev) => prev.filter((_, i) => i !== index));
   };
 
   const validate = () => {
@@ -154,6 +179,11 @@ export default function EditProductModal({
             toast.error("Todas variações devem ter nome e preço válidos"), false
           );
       }
+
+      if (hasDuplicateVariationNames(variations))
+        return (
+          toast.error("Nomes de variações duplicados não são permitidos"), false
+        );
     }
 
     return true;
@@ -208,7 +238,12 @@ export default function EditProductModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-lg shadow-2xl">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        className="bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-lg shadow-2xl"
+      >
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-blue-500">Editar Produto</h2>
@@ -293,34 +328,42 @@ export default function EditProductModal({
             <div className="flex justify-between flex-col items-start">
               <h3 className="font-semibold">Variações</h3>
               {variations.map((v, i) => (
-                <div key={i} className="w-full flex gap-2 mb-2">
-                  <input
-                    type="text"
-                    placeholder="Nome"
-                    value={v.name}
-                    onChange={(e) =>
-                      handleVariationChange(i, "name", e.target.value)
-                    }
-                    className="flex-1 p-2 bg-slate-800 border border-blue-500 outline-none"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Preço"
-                    min="0"
-                    value={v.price}
-                    onChange={(e) =>
-                      handleVariationChange(i, "price", e.target.value)
-                    }
-                    className="w-32 p-2 bg-slate-800 border border-blue-500 outline-none"
-                    step="0.01"
-                  />
-                  <button
-                    onClick={() => removeVariation(i)}
-                    type="button"
-                    className="text-red-600 text-xl cursor-pointer transition hover:text-red-700"
-                  >
-                    <FaTrashAlt />
-                  </button>
+                <div key={i} className="w-full flex flex-col gap-1 mb-2">
+                  <div className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      placeholder="Nome"
+                      value={v.name}
+                      onChange={(e) =>
+                        handleVariationChange(i, "name", e.target.value)
+                      }
+                      className="flex-1 p-2 bg-slate-800 border border-blue-500 outline-none"
+                    />
+                    <input
+                      type="number"
+                      placeholder="Preço"
+                      min="0"
+                      value={v.price}
+                      onChange={(e) =>
+                        handleVariationChange(i, "price", e.target.value)
+                      }
+                      className="w-32 p-2 bg-slate-800 border border-blue-500 outline-none"
+                      step="0.01"
+                    />
+                    <button
+                      onClick={() => removeVariation(i)}
+                      type="button"
+                      className="text-red-600 text-xl cursor-pointer transition hover:text-red-700"
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  </div>
+
+                  {variationErrors[i] && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {variationErrors[i]}
+                    </p>
+                  )}
                 </div>
               ))}
               <button
@@ -369,7 +412,7 @@ export default function EditProductModal({
             </button>
           </div>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 }

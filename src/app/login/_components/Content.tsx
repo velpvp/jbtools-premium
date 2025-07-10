@@ -47,7 +47,10 @@ export default function LoginContent() {
 
   return (
     <>
-      <main className="min-h-[90vh] flex items-center justify-center p-4">
+      <main
+        className="min-h-[90vh] flex items-center justify-center p-4"
+        data-aos="fade"
+      >
         <form
           onSubmit={fazerLogin}
           className="bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] p-6 rounded-lg shadow-md w-full max-w-sm"

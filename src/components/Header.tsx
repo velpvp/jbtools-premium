@@ -7,6 +7,7 @@ import logoFloating from "../../public/logo-floating.png";
 import { FaShoppingCart, FaSearch } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
 import CartSidebar from "./CartSidebar";
+import { AnimatePresence } from "framer-motion";
 
 export default function Header() {
   const { cart } = useCart();
@@ -92,8 +93,9 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Sidebar de carrinho */}
-      {sidebarOpen && <CartSidebar onClose={() => setSidebarOpen(false)} />}
+      <AnimatePresence>
+        {sidebarOpen && <CartSidebar onClose={() => setSidebarOpen(false)} />}
+      </AnimatePresence>
     </header>
   );
 }

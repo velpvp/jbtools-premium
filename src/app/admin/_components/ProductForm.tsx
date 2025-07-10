@@ -20,6 +20,8 @@ export default function ProductForm() {
   const [promoEnabled, setPromoEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [variationErrors, setVariationErrors] = useState<string[]>([]);
+
   const [variations, setVariations] = useState<
     { name: string; price: string }[]
   >([]);
@@ -85,10 +87,19 @@ export default function ProductForm() {
     const data = await res.json();
     return data.secure_url;
   }
+  function hasVariationErrors() {
+    return variationErrors.some((msg) => msg && msg.trim() !== "");
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
     if (!validate()) return;
+
+    if (hasVariationErrors()) {
+      toast.error("Corrija os erros nas variações antes de continuar.");
+      return;
+    }
 
     setLoading(true);
     try {
@@ -126,6 +137,7 @@ export default function ProductForm() {
       setImage(null);
       setPromoEnabled(false);
       setVariations([]);
+      setVariationErrors([]);
     } catch (error) {
       console.error(error);
       toast.error("Erro ao cadastrar o produto.");
@@ -164,7 +176,7 @@ export default function ProductForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Preço</label>
+        <label className="block text-sm font-medium">Preço (R$)</label>
         <input
           type="number"
           name="price"
@@ -186,6 +198,7 @@ export default function ProductForm() {
             checked={promoEnabled}
             onChange={() => setPromoEnabled((prev) => !prev)}
             disabled={hasVariations}
+            className="accent-blue-600"
           />
           Ativar promoção
         </label>
@@ -193,7 +206,9 @@ export default function ProductForm() {
 
       {promoEnabled && (
         <div>
-          <label className="block text-sm font-medium">Preço Promocional</label>
+          <label className="block text-sm font-medium">
+            Preço Promocional (R$)
+          </label>
           <input
             type="number"
             name="promo"
@@ -201,6 +216,7 @@ export default function ProductForm() {
             onChange={handleChange}
             placeholder="Digite o preço promocional do produto"
             disabled={hasVariations}
+            step="0.01"
             className={`w-full p-2 bg-slate-800 border border-blue-500 outline-none ${
               hasVariations ? "opacity-50 cursor-not-allowed" : ""
             }`}
@@ -216,45 +232,82 @@ export default function ProductForm() {
           Variações (opcional)
         </label>
         {variations.map((variation, index) => (
-          <div key={index} className="mb-2 flex gap-2 items-center">
-            <input
-              type="text"
-              placeholder="Nome (ex: Mensal)"
-              value={variation.name}
-              onChange={(e) =>
-                setVariations((prev) =>
-                  prev.map((v, i) =>
-                    i === index ? { ...v, name: e.target.value } : v
+          <div key={index} className="mb-2 flex flex-col gap-1">
+            <div className="flex gap-2 items-center">
+              {/* input nome */}
+              <input
+                type="text"
+                placeholder="Nome (ex: Mensal)"
+                value={variation.name}
+                onChange={(e) => {
+                  const newName = e.target.value;
+
+                  // Atualiza variação
+                  setVariations((prev) =>
+                    prev.map((v, i) =>
+                      i === index ? { ...v, name: newName } : v
+                    )
+                  );
+
+                  // Verifica duplicatas
+                  setVariationErrors((prevErrors) => {
+                    const newErrors = [...prevErrors];
+                    const isDuplicate = variations.some(
+                      (v, i) =>
+                        i !== index &&
+                        v.name.trim().toLowerCase() ===
+                          newName.trim().toLowerCase()
+                    );
+                    newErrors[index] = isDuplicate
+                      ? "Esse nome de variação já foi usado."
+                      : "";
+                    return newErrors;
+                  });
+                }}
+                className="flex-1 p-2 bg-slate-800 border border-blue-500 outline-none"
+              />
+
+              {/* input preço */}
+              <input
+                type="number"
+                placeholder="Preço (R$)"
+                min="0"
+                step="0.01"
+                value={variation.price}
+                onChange={(e) =>
+                  setVariations((prev) =>
+                    prev.map((v, i) =>
+                      i === index ? { ...v, price: e.target.value } : v
+                    )
                   )
-                )
-              }
-              className="flex-1 p-2 bg-slate-800 border border-blue-500 outline-none"
-            />
-            <input
-              type="number"
-              placeholder="Preço"
-              min="0"
-              value={variation.price}
-              onChange={(e) =>
-                setVariations((prev) =>
-                  prev.map((v, i) =>
-                    i === index ? { ...v, price: e.target.value } : v
-                  )
-                )
-              }
-              className="w-[120px] p-2 bg-slate-800 border border-blue-500 outline-none"
-            />
-            <button
-              type="button"
-              onClick={() =>
-                setVariations((prev) => prev.filter((_, i) => i !== index))
-              }
-              className="text-red-600 text-xl cursor-pointer transition hover:text-red-700"
-            >
-              <FaTrashAlt />
-            </button>
+                }
+                className="w-[120px] p-2 bg-slate-800 border border-blue-500 outline-none"
+              />
+
+              {/* botão remover */}
+              <button
+                type="button"
+                onClick={() => {
+                  setVariations((prev) => prev.filter((_, i) => i !== index));
+                  setVariationErrors((prev) =>
+                    prev.filter((_, i) => i !== index)
+                  ); // <- limpa erro correspondente
+                }}
+                className="text-red-600 text-xl cursor-pointer transition hover:text-red-700"
+              >
+                <FaTrashAlt />
+              </button>
+            </div>
+
+            {/* erro de variação duplicada */}
+            {variationErrors[index] && (
+              <p className="text-red-500 text-sm mt-1">
+                {variationErrors[index]}
+              </p>
+            )}
           </div>
         ))}
+
         <button
           type="button"
           onClick={() =>
