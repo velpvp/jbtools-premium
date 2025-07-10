@@ -59,6 +59,10 @@ export default function CheckoutContent() {
   const applyCoupon = async () => {
     setCouponError("");
 
+    if (total < 10) {
+      return setCouponError("O valor mínimo para usar cupom é R$10,00.");
+    }
+
     const trimmed = couponInput.trim().toUpperCase();
     if (!trimmed) return setCouponError("Digite um cupom válido.");
 
