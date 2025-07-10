@@ -9,17 +9,19 @@ import ButtonWhats from "@/components/ButtonWhats";
 
 export default function Home() {
   return (
-    <div data-aos="fade">
-      <Suspense>
-        <Header />
+    <div>
+      <div data-aos="fade">
+        <Suspense>
+          <Header />
 
-        <main>
-          <ImagesCarousel />
-          <Products />
-        </main>
-        <ButtonWhats />
-        <Footer />
-      </Suspense>
+          <main>
+            <ImagesCarousel />
+            <Products />
+          </main>
+          <Footer />
+        </Suspense>
+      </div>
+      <ButtonWhats />
     </div>
   );
 }
