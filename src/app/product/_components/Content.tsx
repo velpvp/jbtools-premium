@@ -201,7 +201,7 @@ export default function ProductContent() {
                     <select
                       value={selectedVariation?.name || ""}
                       onChange={handleVariationChange}
-                      className="p-2 bg-black/10 border border-gray-500 outline-none rounded-lg"
+                      className="select-product p-2 bg-black/10 border border-gray-500 outline-none rounded-lg"
                     >
                       {product.variations?.map((v, i) => (
                         <option key={i} value={v.name} className="bg-blue-950">
