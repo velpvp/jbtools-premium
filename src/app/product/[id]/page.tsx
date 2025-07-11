@@ -18,8 +18,7 @@ export async function generateMetadata({
 
   const productsData = snapshot.empty ? null : snapshot.docs[0].data();
   const productsName = productsData?.name;
-  const productsDescription = productsData?.description;
-
+  const productsDescription = productsData?.description ?? "";
   const productsImage = productsData?.imagemCapa;
 
   return {

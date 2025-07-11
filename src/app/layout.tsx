@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Alata } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "@/components/ClientWrapper";
 import { AosInit } from "@/components/aos-init";
@@ -10,6 +10,12 @@ const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-montserrat",
   weight: ["400", "500", "600", "700"],
+});
+
+const alata = Alata({
+  subsets: ["latin"],
+  variable: "--font-alata",
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -40,7 +46,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${montserrat.variable} font-sans antialiased`}>
+      <body
+        className={`${montserrat.variable} ${alata.variable} font-sans antialiased`}
+      >
         <AosInit />
         <ClientWrapper>{children}</ClientWrapper>
         <ToastContainer theme="dark" position="bottom-right" autoClose={3000} />
