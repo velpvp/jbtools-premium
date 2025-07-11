@@ -1,16 +1,21 @@
 "use client";
 
+import { useState } from "react";
+import ProductModal from "./ProductModal";
 import Image from "next/image";
 import { FaCartShopping } from "react-icons/fa6";
+import { FaChevronDown } from "react-icons/fa";
 import { FaPlay } from "react-icons/fa";
 import { Product } from "@/types/Product";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
+import { AnimatePresence } from "framer-motion";
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart();
 
   const hasVariations = (product.variations ?? []).length > 0;
+  const [showModal, setShowModal] = useState(false);
 
   const lowestVariationPrice = hasVariations
     ? Math.min(...(product.variations ?? []).map((v) => v.price))
@@ -53,13 +58,15 @@ export default function ProductCard({ product }: { product: Product }) {
         </h3>
       </Link>
 
-      <Link href={`/product/${product.id}`}>
-        <p className="text-[1rem] text-gray-100 mb-2">
-          {product.description.length > 120
-            ? product.description.slice(0, 120) + "..."
-            : product.description}
-        </p>
-      </Link>
+      <div className="w-full flex justify-end">
+        <button
+          onClick={() => setShowModal(true)}
+          className="text-blue-500 transition hover:text-blue-700 font-medium text-sm mb-2 cursor-pointer text-end flex items-center gap-1"
+        >
+          Ver mais
+          <FaChevronDown className="w-3.5 h-3.5" />
+        </button>
+      </div>
 
       <div className="product-price text-sm">
         {hasVariations ? "A partir de" : "Preço"}
@@ -90,6 +97,11 @@ export default function ProductCard({ product }: { product: Product }) {
           </button>
         )}
       </div>
+      <AnimatePresence>
+        {showModal && (
+          <ProductModal product={product} onClose={() => setShowModal(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
