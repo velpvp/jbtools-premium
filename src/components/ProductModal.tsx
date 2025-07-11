@@ -32,7 +32,9 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           <IoClose />
         </button>
 
-        <h2 className="text-xl font-bold text-white mb-2">{product.name}</h2>
+        <h2 className="text-xl font-bold text-white mb-2 mt-2">
+          {product.name}
+        </h2>
         <p className="text-gray-200 whitespace-pre-line">
           {product.description}
         </p>
