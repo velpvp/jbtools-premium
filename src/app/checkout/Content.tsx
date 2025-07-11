@@ -19,6 +19,7 @@ export default function CheckoutContent() {
   const chavePix = "fc46bc2d-f69d-43e7-b059-d08637d8803";
 
   const [step, setStep] = useState(1);
+  const [loadingStep2, setLoadingStep2] = useState(false);
   const [nome, setNome] = useState("");
   const [phone, setPhone] = useState("");
   const [copied, setCopied] = useState(false);
@@ -152,7 +153,26 @@ export default function CheckoutContent() {
       </div>
     );
   }
-
+  if (loadingStep2) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 mx-auto text-center min-h-screen bg-gray-950">
+        <svg
+          className="animate-spin h-8 w-8 text-blue-600 mb-4"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          />
+        </svg>
+        <p className="text-lg font-semibold text-blue-600">
+          Indo para a página de pagamento...
+        </p>
+      </div>
+    );
+  }
   // Etapa 1: Formulário e Detalhes do pedido
   if (step === 1) {
     return (
@@ -359,7 +379,11 @@ export default function CheckoutContent() {
               }
 
               if (!hasError) {
-                setStep(2);
+                setLoadingStep2(true);
+                setTimeout(() => {
+                  setLoadingStep2(false);
+                  setStep(2);
+                }, 2000);
               }
             }}
             className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-md transition cursor-pointer"
