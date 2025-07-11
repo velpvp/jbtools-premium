@@ -690,23 +690,23 @@ input.no-spinners {
 }
 
 /* Ícone colorido quando NÃO ativo */
-.category-item:not(.active)[data-category="all"] .icon-category {
+.category-item:not(.active)[data-category="All"] .icon-category {
   color: #10b981;
 }
 
-.category-item:not(.active)[data-category="ias"] .icon-category {
+.category-item:not(.active)[data-category="Ias"] .icon-category {
   color: #8b5cf6;
 }
 
-.category-item:not(.active)[data-category="streamings"] .icon-category {
+.category-item:not(.active)[data-category="Streamings"] .icon-category {
   color: #f59e0b;
 }
 
-.category-item:not(.active)[data-category="jogos"] .icon-category {
+.category-item:not(.active)[data-category="Jogos"] .icon-category {
   color: #ef4444;
 }
 
-.category-item:not(.active)[data-category="outros"] .icon-category {
+.category-item:not(.active)[data-category="Outros"] .icon-category {
   color: #6b7280;
 }
 

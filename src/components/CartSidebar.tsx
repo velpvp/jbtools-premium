@@ -49,7 +49,7 @@ export default function CartSidebar({ onClose }: CartSidebarProps) {
         exit={{ opacity: 0 }}
         onClick={onClose}
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1], delay: 0.05 }}
-        className="fixed inset-0 h-full min-h-screen bg-black z-40 overflow-hidden"
+        className="fixed inset-0 h-full min-h-screen bg-black overflow-hidden z-90"
         aria-label="Fechar carrinho"
       />
 
@@ -60,7 +60,7 @@ export default function CartSidebar({ onClose }: CartSidebarProps) {
         animate={{ x: 0 }}
         exit={{ x: "100%" }}
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-        className="fixed top-0 right-0 h-full min-h-screen z-50 w-80 bg-[rgba(10,10,10,0.95)] shadow-lg flex flex-col p-4"
+        className="fixed top-0 right-0 h-full min-h-screen z-95 w-80 bg-[rgba(10,10,10,0.95)] shadow-lg flex flex-col p-4"
       >
         <header className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold text-[#2563eb]">Carrinho</h2>

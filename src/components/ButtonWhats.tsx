@@ -13,7 +13,7 @@ export default function ButtonWhats() {
       {/* Botão flutuante */}
       <div
         onClick={() => setIsOpen(true)}
-        className="fixed right-3 bottom-3 cursor-pointer z-50 transition hover:scale-105 btn-suporte"
+        className="fixed right-3 bottom-3 cursor-pointer z-10 transition hover:scale-105 btn-suporte"
       >
         <Image
           src={suporteImg}
@@ -25,7 +25,7 @@ export default function ButtonWhats() {
 
       {/* Modal flutuante */}
       {isOpen && (
-        <div className="fixed right-3 bottom-28 z-50 w-72 bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] shadow-xl rounded-lg p-4 border- animate-fade-in">
+        <div className="fixed right-3 bottom-28 z-20 w-72 bg-[rgba(10,10,10,0.95)] backdrop-blur-[15px] border border-[rgba(59,130,246,0.3)] shadow-xl rounded-lg p-4 border- animate-fade-in">
           <div className="flex justify-between items-start">
             <h3 className="text-lg font-semibold text-white">Fale conosco</h3>
             <button

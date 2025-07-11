@@ -53,6 +53,7 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "all" ? "active" : ""
               }`}
+              data-category="All"
               onClick={() => handleCategoryClick("all")}
             >
               <FaGlobe className="text-2xl icon-category" />
@@ -62,6 +63,7 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "ias" ? "active" : ""
               }`}
+              data-category="Ias"
               onClick={() => handleCategoryClick("ias")}
             >
               <FaRobot className="text-2xl icon-category" />
@@ -71,6 +73,7 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "streamings" ? "active" : ""
               }`}
+              data-category="Streamings"
               onClick={() => handleCategoryClick("streamings")}
             >
               <FaTv className="text-2xl icon-category" />
@@ -80,6 +83,7 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "jogos" ? "active" : ""
               }`}
+              data-category="Jogos"
               onClick={() => handleCategoryClick("jogos")}
             >
               <FaGamepad className="text-2xl icon-category" />
@@ -89,6 +93,7 @@ export default function Products() {
               className={`category-item ${
                 selectedCategory === "outros" ? "active" : ""
               }`}
+              data-category="Outros"
               onClick={() => handleCategoryClick("outros")}
             >
               <FaEllipsisH className="text-2xl icon-category" />
